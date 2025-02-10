@@ -83,38 +83,35 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Guardar cambios en localStorage cuando se escriba en los campos
-        input.addEventListener("input", function () {
-            if (input.type === 'radio') {
-                const selectedRadio = document.querySelector(`input[name="${input.name}"]:checked`);
-                if (selectedRadio) {
-                    localStorage.setItem(input.name, selectedRadio.value);
+        if (input.type === 'radio') {
+            input.addEventListener("change", function () {
+                if (input.checked) {
+                    localStorage.setItem(input.name, input.value);
                 }
-            } else {
+            });
+        } else {
+            input.addEventListener("input", function () {
                 localStorage.setItem(input.name, input.value);
-            }
-        });
+            });
+        }
     });
 
     // Guardar cambios para los textareas también
     textareas.forEach(textarea => {
-        const savedValue = localStorage.getItem(textarea.id);
+        const savedValue = localStorage.getItem(textarea.name);
         if (savedValue) {
             textarea.value = savedValue;
         }
 
-        // Guardar cambios cuando se escriba en el textarea
         textarea.addEventListener("input", function () {
-            localStorage.setItem(textarea.id, textarea.value);
+            localStorage.setItem(textarea.name, textarea.value);
         });
     });
 });
 
-// Función para limpiar el almacenamiento local (opcional)
 function limpiarFormulario() {
     localStorage.clear();
     document.querySelectorAll("input").forEach(input => input.value = "");
     document.querySelectorAll("textarea").forEach(textarea => textarea.value = "");
     document.querySelectorAll("input[type='radio']").forEach(input => input.checked = false);
 }
-
-
