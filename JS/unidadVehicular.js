@@ -62,7 +62,8 @@ function buscarVehiculo() {
 
 // Recuperar datos guardados al cargar la página
 document.addEventListener("DOMContentLoaded", function () {
-    let inputs = document.querySelectorAll("input");
+    // Guardar y recuperar inputs de texto
+    let inputs = document.querySelectorAll("input[type='text'], input[type='number'], input[type='date']");
     inputs.forEach(input => {
         let savedValue = localStorage.getItem(input.id);
         if (savedValue) {
@@ -72,6 +73,34 @@ document.addEventListener("DOMContentLoaded", function () {
         // Guardar cada cambio en localStorage
         input.addEventListener("input", function () {
             localStorage.setItem(input.id, input.value);
+        });
+    });
+
+    // Guardar y recuperar selects
+    let selects = document.querySelectorAll("select");
+    selects.forEach(select => {
+        let savedValue = localStorage.getItem(select.id);
+        if (savedValue) {
+            select.value = savedValue;
+        }
+
+        // Guardar cada cambio en localStorage
+        select.addEventListener("change", function () {
+            localStorage.setItem(select.id, select.value);
+        });
+    });
+
+    // Guardar y recuperar radio buttons
+    let radios = document.querySelectorAll("input[type='radio']");
+    radios.forEach(radio => {
+        let savedValue = localStorage.getItem(radio.name);
+        if (savedValue && radio.value === savedValue) {
+            radio.checked = true;
+        }
+
+        // Guardar cada cambio en localStorage
+        radio.addEventListener("change", function () {
+            localStorage.setItem(radio.name, radio.value);
         });
     });
 });
@@ -87,4 +116,3 @@ function finalizarFormulario() {
         window.location.href = "../vistas/formulario/pdfs.html"; // Redirige después de aceptar
     });
 }
-

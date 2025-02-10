@@ -65,6 +65,8 @@ function nextTab() {
 document.addEventListener("DOMContentLoaded", function() {
     openTab({ currentTarget: document.getElementById("exterior") }, "Exterior");
 });
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const inputs = document.querySelectorAll("input");
     const textareas = document.querySelectorAll("textarea");
@@ -114,3 +116,5 @@ function limpiarFormulario() {
     document.querySelectorAll("textarea").forEach(textarea => textarea.value = "");
     document.querySelectorAll("input[type='radio']").forEach(input => input.checked = false);
 }
+
+
