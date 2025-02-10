@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resguardante</title>
     <link rel="stylesheet" href="../../css/stylesformulario.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
     <div class="container">
         <!-- Menú lateral -->
@@ -24,7 +27,7 @@
 
         <!-- Sección del formulario -->
         <div class="right-section">
-            <form method="post" action="guardar_resguardo.php">
+            <form>
                 <h1>Resguardo Vehicular</h1>
                 <div class="form-row">
                     <div class="form-group">
@@ -40,18 +43,19 @@
                         <input type="text" id="FGJRM" name="FGJRM">
                     </div>
                 </div>
-            
+
                 <div class="form-row">
+                    <!-- Resguardante -->
                     <div class="form-group">
                         <label for="resguardante">Resguardante:</label>
-                        <input type="text" id="resguardante" name="resguardante">
+                        <input type="text" id="resguardante" name="resguardante" onblur="buscarEmpleados()">
                     </div>
                     <div class="form-group">
                         <label for="cargo">Cargo:</label>
                         <input type="text" id="cargo" name="cargo">
                     </div>
                 </div>
-            
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="licencia">Licencia:</label>
@@ -62,7 +66,7 @@
                         <input type="text" id="vigencia" name="vigencia">
                     </div>
                 </div>
-            
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="fiscalia_general">Fiscalía General:</label>
@@ -73,7 +77,7 @@
                         <input type="text" id="fiscalia_especializada" name="fiscalia_especializada">
                     </div>
                 </div>
-            
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="vicefiscalia">Vicefiscalía en:</label>
@@ -84,25 +88,26 @@
                         <input type="text" id="direccion_general" name="direccion_general">
                     </div>
                 </div>
-            
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="departamento_area">Departamento/Área:</label>
                         <input type="text" id="departamento_area" name="departamento_area">
                     </div>
                 </div>
-            
+
                 <div class="form-row">
+                    <!-- Resguardante Interno -->
                     <div class="form-group">
                         <label for="resguardante_interno">Resguardante Interno:</label>
-                        <input type="text" id="resguardante_interno" name="resguardante_interno">
+                        <input type="text" id="resguardante_interno" name="resguardante_interno"  onblur="buscarEmpleados()">
                     </div>
                     <div class="form-group">
                         <label for="cargo_interno">Cargo:</label>
                         <input type="text" id="cargo_interno" name="cargo_interno">
                     </div>
                 </div>
-            
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="licencia_interna">Licencia:</label>
@@ -113,7 +118,7 @@
                         <input type="text" id="vigencia_interna" name="vigencia_interna">
                     </div>
                 </div>
-            
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="numero_empleado">Número de Empleado:</label>
@@ -121,16 +126,16 @@
                     </div>
                     <div class="form-group">
                         <label for="celular">Celular:</label>
-                        <input type="number" id="celular" name="celular">
+                        <input type="text" id="celular" name="celular">
                     </div>
                 </div>
-            
-                <button type="submit">Guardar</button>
-            </form>            
-            <button class="btn" type="button" onclick="siguiente()">Siguiente</button>
+
+            </form>
+            <button class="btn" type="submit" onclick="siguiente()">Siguiente</button>
         </div>
     </div>
-    <script src="../../js/resguardante.js"></script>
-    <script src="../../js/activado.js"></script>
+    <script src="../../JS/resguardante.js"></script>
+    <script src="../../JS/activado.js"></script>
 </body>
+
 </html>

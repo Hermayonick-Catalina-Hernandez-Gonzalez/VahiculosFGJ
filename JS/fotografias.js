@@ -34,7 +34,11 @@ function tomarFoto() {
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     // Convertir la imagen a URL y asignarla
-    imagenDestino.src = canvas.toDataURL("image/png");
+    const imagenBase64 = canvas.toDataURL("image/png");
+    imagenDestino.src = imagenBase64;
+
+    // Guardar la imagen en localStorage para que persista
+    localStorage.setItem(imagenDestino.id, imagenBase64);
 
     // Cerrar la cámara
     cerrarCamara();
@@ -50,4 +54,15 @@ function cerrarCamara() {
 
     // Ocultar el modal
     modal.style.display = "none";
+}
+
+// Al cargar la página, recuperar las imágenes desde localStorage
+window.onload = function () {
+    const imagenes = ["foto-frontal", "foto-posterior", "foto-derecho", "foto-izquierdo"];
+    imagenes.forEach(fotoId => {
+        const fotoBase64 = localStorage.getItem(fotoId);
+        if (fotoBase64) {
+            document.getElementById(fotoId).src = fotoBase64;
+        }
+    });
 }
