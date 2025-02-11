@@ -69,7 +69,7 @@ $result = $conn->query($sql);
                     echo "<td>" . $row["marca_vehiculo"] . "</td>";
                     echo "<td>" . $row["modelo_vehiculo"] . "</td>";
                     echo "<td>
-                        <button onclick=\"editar('" . $row['numero_economico'] . "')\"><i class=\"fa fa-pencil\"></i> Editar</button>
+                        <button onclick=\"editar()\"><i class=\"fa fa-pencil\"></i> Editar</button>
                         <button onclick=\"ver('" . $row['numero_economico'] . "')\"><i class=\"fa fa-eye\"></i> Ver</button>
                     </td>";
                     echo "</tr>";

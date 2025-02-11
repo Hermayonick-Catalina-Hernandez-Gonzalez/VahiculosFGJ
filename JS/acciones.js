@@ -14,8 +14,8 @@ function iniciar() {
     window.location.href = "../vistas/inicio.php";
 }
 
-function editar(numeroEconomico) {
-    window.location.href = "../../vistas/formulario/resguardante.html?numero_economico=" + numeroEconomico;
+function editar() {
+    window.location.href = "http://localhost/xampp/VehiculosFGJ/vistas/formulario/resguardante.html";
 }
 
 function siguiente() {
