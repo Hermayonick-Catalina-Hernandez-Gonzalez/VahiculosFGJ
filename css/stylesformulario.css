@@ -180,15 +180,16 @@ iframe {
 
 /* Contenedor de imágenes */
 .foto-apartado-container {
+    background-color: #ffffff;
     display: flex;
     justify-content: center;
-    width: 90%;
+    width: 100%;
     max-width: 800px;
     flex-wrap: wrap;
 }
 
 .foto-apartado {
-    width: 50%;
+    width: 48%;
     text-align: center;
 }
 
@@ -285,6 +286,27 @@ video {
     border: none;
     cursor: pointer;
 }
+
+.suggestions {
+    list-style: none;
+    padding: 0;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    width: 200px;
+}
+
+.suggestions li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.suggestions li:hover {
+    background: #f0f0f0;
+}
+
 
 /* Pantallas pequeñas (menos de 768px) */
 @media (max-width: 768px) {
