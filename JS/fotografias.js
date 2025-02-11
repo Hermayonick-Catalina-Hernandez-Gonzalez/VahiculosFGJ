@@ -9,6 +9,11 @@ function abrirCamara(idImagen) {
     // Mostrar modal
     modal.style.display = "flex";
 
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert("Tu navegador no soporta acceso a la cámara.");
+        return;
+    }
+    
     // Acceder a la cámara
     navigator.mediaDevices.getUserMedia({ video: true })
         .then(function (stream) {
