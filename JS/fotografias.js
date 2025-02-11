@@ -71,3 +71,34 @@ window.onload = function () {
         }
     });
 }
+
+function finalizarFormulario() {
+    // Limpiar localStorage
+    localStorage.clear();
+
+    // Resetear el formulario
+    document.getElementById("Verificacion").reset();
+
+    // Borrar imágenes almacenadas en localStorage y en la página
+    const imagenes = ["foto-frontal", "foto-posterior", "foto-derecho", "foto-izquierdo"];
+    imagenes.forEach(fotoId => {
+        localStorage.removeItem(fotoId);
+        let imgElement = document.getElementById(fotoId);
+        if (imgElement) {
+            imgElement.src = "";
+        }
+    });
+
+    // Limpiar los iframes de vista previa
+    document.getElementById("preview1").src = "";
+    document.getElementById("preview2").src = "";
+
+    // Mostrar mensaje de éxito
+    Swal.fire({
+        title: "Good job!",
+        text: "Datos enviados correctamente.",
+        icon: "success"
+    }).then(() => {
+        window.location.href = "../vistas/formulario/pdfs.html"; // Redirige después de aceptar
+    });
+}
