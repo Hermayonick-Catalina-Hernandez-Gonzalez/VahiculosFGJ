@@ -105,16 +105,12 @@ function guardarFirma() {
     let canvas = document.getElementById("canvasFirma");
     let imagenFirma = canvas.toDataURL("image/png"); // Convertir firma a imagen
 
-    // Mostrar alerta de éxito
     Swal.fire({
         icon: "success",
         title: "Firma Guardada",
         text: "La firma ha sido registrada correctamente.",
     });
 
-    // Cerrar el modal de firma
     cerrarFirma();
-
-    // Llamar a generarPDF1() con la firma y descargarlo
     descargarPDFConFirma(imagenFirma);
 }
