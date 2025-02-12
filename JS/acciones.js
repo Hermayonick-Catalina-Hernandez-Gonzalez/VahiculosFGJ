@@ -1,5 +1,5 @@
 function salir() {
-    window.location.href = "../vistas/index.html";
+    window.location.href = "../vistas/index.php";
 }
 
 function ver(numeroEconomico) {

@@ -1,12 +1,11 @@
 <?php
 require "../php/conexion.php";
+session_start();
 
-// Comprobar si se envió el formulario para iniciar sesión
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $correo = $_POST['correo'];
     $contra = $_POST['contra'];
 
-    // Consulta para verificar las credenciales
     $sql = "SELECT * FROM usuarios WHERE correo = ? LIMIT 1";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $correo);
@@ -15,19 +14,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows > 0) {
         $usuario = $result->fetch_assoc();
-        // Verificar si la contraseña es correcta
         if (password_verify($contra, $usuario['contra'])) {
-            // Iniciar sesión, puedes guardar los datos del usuario en una variable de sesión
-            session_start();
             $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['correo'] = $usuario['correo'];
             header("Location: ../vistas/inicio.php"); // Redirigir a la página principal
+            exit();
         } else {
-            echo "Contraseña incorrecta";
+            $_SESSION['error'] = "Contraseña incorrecta"; // Guardar mensaje de error
         }
     } else {
-        echo "No se encontró un usuario con ese correo.";
+        $_SESSION['error'] = "No se encontró un usuario con ese correo";
     }
+    header("Location: ../vistas/index.php"); // Redirigir de vuelta al login
+    exit();
 }
-$conn->close();
 ?>
