@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     let fiscalias = [
         "Fiscalía General de Justicia",
         "Fiscalía Anticorrupción",
@@ -30,9 +30,31 @@ $(document).ready(function() {
         "Departamento de Servicios Periciales"
     ];
 
-    $("#fiscalia_general").autocomplete({ source: fiscalias });
-    $("#fiscalia_especializada").autocomplete({ source: especializadas });
-    $("#vicefiscalia").autocomplete({ source: vicefiscalias });
-    $("#direccion_general").autocomplete({ source: direcciones });
-    $("#departamento_area").autocomplete({ source: departamentos });
+    // Función para inicializar autocomplete con almacenamiento en localStorage
+    function setupAutocomplete(selector, dataList) {
+        $(selector).autocomplete({
+            source: dataList,
+            select: function (event, ui) {
+                localStorage.setItem(selector, ui.item.value);
+            }
+        });
+
+        // Cargar datos guardados en localStorage al inicio
+        let savedValue = localStorage.getItem(selector);
+        if (savedValue) {
+            $(selector).val(savedValue);
+        }
+
+        // Guardar en localStorage cuando el usuario escriba
+        $(selector).on("input", function () {
+            localStorage.setItem(selector, $(this).val());
+        });
+    }
+
+    // Inicializar autocompletes con almacenamiento
+    setupAutocomplete("#fiscalia_general", fiscalias);
+    setupAutocomplete("#fiscalia_especializada", especializadas);
+    setupAutocomplete("#vicefiscalia", vicefiscalias);
+    setupAutocomplete("#direccion_general", direcciones);
+    setupAutocomplete("#departamento_area", departamentos);
 });
