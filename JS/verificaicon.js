@@ -68,9 +68,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    const inputs = document.querySelectorAll("input");
-    const textareas = document.querySelectorAll("textarea");
-
+    const inputs = document.querySelectorAll("input[type='radio'], input[type='text'], textarea");
     // Cargar valores almacenados en localStorage
     inputs.forEach(input => {
         const savedValue = localStorage.getItem(input.name);
@@ -82,36 +80,15 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // Guardar cambios en localStorage cuando se escriba en los campos
-        if (input.type === 'radio') {
-            input.addEventListener("change", function () {
-                if (input.checked) {
-                    localStorage.setItem(input.name, input.value);
-                }
-            });
-        } else {
-            input.addEventListener("input", function () {
+        // Guardar cambios en localStorage
+        input.addEventListener("change", function () {
+            if (input.type === 'radio' && input.checked) {
                 localStorage.setItem(input.name, input.value);
-            });
-        }
-    });
-
-    // Guardar cambios para los textareas también
-    textareas.forEach(textarea => {
-        const savedValue = localStorage.getItem(textarea.name);
-        if (savedValue) {
-            textarea.value = savedValue;
-        }
-
-        textarea.addEventListener("input", function () {
-            localStorage.setItem(textarea.name, textarea.value);
+            } else if (input.type !== 'radio') {
+                localStorage.setItem(input.name, input.value);
+            }
         });
     });
+
 });
 
-function limpiarFormulario() {
-    localStorage.clear();
-    document.querySelectorAll("input").forEach(input => input.value = "");
-    document.querySelectorAll("textarea").forEach(textarea => textarea.value = "");
-    document.querySelectorAll("input[type='radio']").forEach(input => input.checked = false);
-}
