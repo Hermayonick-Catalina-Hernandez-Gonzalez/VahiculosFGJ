@@ -30,3 +30,68 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+//funciones par ala firma 
+function abrirFirma() {
+    document.getElementById("modalFirma").style.display = "flex";
+}
+
+function cerrarFirma() {
+    document.getElementById("modalFirma").style.display = "none";
+}
+
+// Funciones para capturar la firma en canvas
+let canvas = document.getElementById("canvasFirma");
+let ctx = canvas.getContext("2d");
+let pintando = false;
+
+canvas.addEventListener("mousedown", iniciarDibujo);
+canvas.addEventListener("mouseup", detenerDibujo);
+canvas.addEventListener("mousemove", dibujar);
+
+function iniciarDibujo(event) {
+    pintando = true;
+    dibujar(event);
+}
+
+function detenerDibujo() {
+    pintando = false;
+    ctx.beginPath();
+}
+
+function dibujar(event) {
+    if (!pintando) return;
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    ctx.strokeStyle = "black";
+
+    let rect = canvas.getBoundingClientRect();
+    let x = event.clientX - rect.left;
+    let y = event.clientY - rect.top;
+
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+}
+
+function limpiarFirma() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function guardarFirma() {
+    let canvas = document.getElementById("canvasFirma");
+    let imagenFirma = canvas.toDataURL("image/png"); // Convertir firma a imagen
+
+    // Mostrar alerta de éxito
+    Swal.fire({
+        icon: "success",
+        title: "Firma Guardada",
+        text: "La firma ha sido registrada correctamente.",
+    });
+
+    // Cerrar el modal de firma
+    cerrarFirma();
+
+    // Llamar a generarPDF1() con la firma y descargarlo
+    descargarPDFConFirma(imagenFirma);
+}
