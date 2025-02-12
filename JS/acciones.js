@@ -50,19 +50,19 @@ function buscar() {
 }
 
 function mostrarSelectVehiculo() {
-    const tipoOcupacion = document.getElementById('tipo_ocupacion').value;
-    const selectOperativo = document.getElementById('select_operativo');
-    const selectAdministrativo = document.getElementById('select_administrativo');
+    let tipoOcupacion = document.getElementById("tipo_ocupacion").value;
+    let selectOperativo = document.getElementById("select_operativo");
+    let selectAdministrativo = document.getElementById("select_administrativo");
 
-    if (tipoOcupacion === 'operativo') {
-        selectOperativo.style.display = 'block';
-        selectAdministrativo.style.display = 'none';
-    } else if (tipoOcupacion === 'administrativo') {
-        selectOperativo.style.display = 'none';
-        selectAdministrativo.style.display = 'block';
-    } else {
-        selectOperativo.style.display = 'none';
-        selectAdministrativo.style.display = 'none';
+    // Oculta ambos select
+    selectOperativo.style.display = "none";
+    selectAdministrativo.style.display = "none";
+
+    // Muestra el select correspondiente
+    if (tipoOcupacion === "operativo") {
+        selectOperativo.style.display = "block";
+    } else if (tipoOcupacion === "administrativo") {
+        selectAdministrativo.style.display = "block";
     }
 }
 
