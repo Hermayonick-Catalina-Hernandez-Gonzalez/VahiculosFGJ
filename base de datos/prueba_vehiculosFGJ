@@ -14,11 +14,16 @@ CREATE TABLE usuarios (
 
 -- Crear la tabla empleados
 CREATE TABLE empleados (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100),
-    cargo VARCHAR(100),
-    numero_empleado INT UNIQUE, -- Asegúrate de que esta columna sea UNIQUE
-    celular VARCHAR(15)
+    id int(11) NOT NULL,
+    nombre varchar(100) DEFAULT NULL,
+    cargo varchar(100) DEFAULT NULL,
+    numero_empleado int(11) DEFAULT NULL,
+    celular varchar(15) DEFAULT NULL,
+    fiscalia_genera varchar(100) DEFAULT NULL,
+    fiscalia_especializada_en varchar(100) DEFAULT NULL,
+    vicefiscalia_en varchar(100) DEFAULT NULL,
+    direccion_general varchar(100) DEFAULT NULL,
+    departamento_area varchar(100) DEFAULT NULL
 );
 
 -- Crear la tabla vehiculos
@@ -36,12 +41,13 @@ CREATE TABLE vehiculos (
 
 
 -- Insertar empleados de prueba
-INSERT INTO empleados (nombre, cargo, numero_empleado, celular) VALUES
-('Juan Pérez', 'Jefe de Seguridad', 1001, '555-1234'),
-('Ana González', 'Supervisor de Mantenimiento', 1002, '555-2345'),
-('Carlos Martínez', 'Conductor', 1003, '555-3456'),
-('Laura Rodríguez', 'Mecánico', 1004, '555-4567'),
-('Pedro López', 'Asistente Administrativo', 1005, '555-5678');
+INSERT INTO empleados (nombre, cargo, numero_empleado, celular, fiscalia_general, fiscalia_especializada_en, vicefiscalia_en, direccion_general, departamento_area) 
+VALUES
+('Juan Pérez', 'Jefe de Seguridad', 1001, '555-1234', 'Fiscalía General de la Nación', 'Fiscalía Especializada en Delitos Financieros', 'Vicefiscalía de Investigación Criminal', 'Dirección General de Seguridad', 'Departamento de Seguridad'),
+('Ana González', 'Supervisor de Mantenimiento', 1002, '555-2345', 'Fiscalía General de la Nación', 'Fiscalía Especializada en Derechos Humanos', 'Vicefiscalía de Prevención de Delitos', 'Dirección General de Logística', 'Departamento de Mantenimiento'),
+('Carlos Martínez', 'Conductor', 1003, '555-3456', 'Fiscalía General de la Nación', 'Fiscalía Especializada en Narcotráfico', 'Vicefiscalía en Investigación de Drogas', 'Dirección General de Transportes', 'Departamento de Transporte'),
+('Laura Rodríguez', 'Mecánico', 1004, '555-4567', 'Fiscalía General de la Nación', 'Fiscalía Especializada en Criminalística', 'Vicefiscalía en Investigación Técnica', 'Dirección General de Infraestructura', 'Departamento de Reparaciones'),
+('Pedro López', 'Asistente Administrativo', 1005, '555-5678', 'Fiscalía General de la Nación', 'Fiscalía Especializada en Administración', 'Vicefiscalía en Finanzas', 'Dirección General de Administración', 'Departamento de Administración');
 
 -- Insertar vehículos de prueba
 INSERT INTO vehiculos (numero_economico, placa, serie, color, clase_vehiculo, marca_vehiculo, submarca, modelo_vehiculo) VALUES
