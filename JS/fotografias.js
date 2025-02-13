@@ -61,3 +61,18 @@ function cerrarCamara() {
     modal.style.display = "none";
 }
 
+// Cargar imágenes guardadas al cargar la página
+document.addEventListener("DOMContentLoaded", function () {
+    const imagenes = document.querySelectorAll("img");
+    imagenes.forEach(imagen => {
+        const imagenGuardada = localStorage.getItem(imagen.id);
+        if (imagenGuardada) {
+            imagen.src = imagenGuardada;
+        }
+    });
+});
+
+// Limpiar localStorage solo cuando el usuario presiona "Aceptar"
+function finalizarFormulario() {
+    localStorage.clear();
+}

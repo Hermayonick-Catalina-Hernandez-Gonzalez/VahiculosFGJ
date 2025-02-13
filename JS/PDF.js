@@ -185,12 +185,22 @@ function descargarPDFConFirma(imagenFirma) {
     let imgData = "../../img/logo.png"; // Imagen del logo
     doc.addImage(imgData, 'PNG', 40, 30, 80, 40);
 
+    doc.setFontSize(12);
+    doc.setTextColor(255, 0, 0); // Rojo
+    doc.text("N° 0342", 500, 70);
+
+    // Restablecer color a negro para el resto del documento
+    doc.setTextColor(0, 0, 0);
+
+
     // **Tabla de información del vehículo**
     doc.autoTable({
         startY: 80,
         head: [["MARCA", "SUBMARCA", "SERIE", "MODELO", "PLACA", "N° ECO"]],
         body: [
-            ["Toyota", "Corolla", "3XXAAB", "2022", "ABC-123", "0218"] // Datos de ejemplo
+            ["Toyota", "Corolla", "3XXAAB", "2022", "ABC-123", "0218"],
+            [{ content: "AREA", styles: { textColor: [255, 255, 255], fontStyle: "bold" } },
+            { content: " ", colSpan: 5, styles: { fillColor: [240, 240, 240], textColor: [0, 0, 0], halign: "center" } }]
         ],
         theme: "grid",
         styles: {

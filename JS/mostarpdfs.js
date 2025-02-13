@@ -107,10 +107,11 @@ function guardarFirma() {
 
     Swal.fire({
         icon: "success",
-        title: "Firma Guardada",
-        text: "La firma ha sido registrada correctamente.",
+        title: "Datos Guardados",
+        text: "Los datos han sido registrados correctamete.",
     });
 
     cerrarFirma();
     descargarPDFConFirma(imagenFirma);
+
 }

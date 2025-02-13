@@ -108,11 +108,4 @@ document.addEventListener("DOMContentLoaded", function () {
 // Limpiar localStorage solo cuando el usuario presiona "Aceptar"
 function finalizarFormulario() {
     localStorage.clear();
-    Swal.fire({
-        title: "Good job!",
-        text: "Datos enviados correctamente.",
-        icon: "success"
-    }).then(() => {
-        window.location.href = "../vistas/formulario/pdfs.html"; // Redirige después de aceptar
-    });
 }
