@@ -68,27 +68,19 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    const inputs = document.querySelectorAll("input[type='radio'], input[type='text'], textarea");
-    // Cargar valores almacenados en localStorage
-    inputs.forEach(input => {
-        const savedValue = localStorage.getItem(input.name);
-        if (savedValue) {
-            if (input.type === 'radio' && input.value === savedValue) {
-                input.checked = true;
-            } else if (input.type !== 'radio') {
-                input.value = savedValue;
-            }
+    const radios = document.querySelectorAll('input[type="radio"]');
+
+    // Cargar valores guardados en localStorage
+    radios.forEach(radio => {
+        const savedValue = localStorage.getItem(radio.name);
+        if (savedValue && radio.value === savedValue) {
+            radio.checked = true;
         }
 
-        // Guardar cambios en localStorage
-        input.addEventListener("change", function () {
-            if (input.type === 'radio' && input.checked) {
-                localStorage.setItem(input.name, input.value);
-            } else if (input.type !== 'radio') {
-                localStorage.setItem(input.name, input.value);
-            }
+        // Escuchar cambios y guardar en localStorage
+        radio.addEventListener("change", function () {
+            localStorage.setItem(radio.name, this.value);
         });
     });
-
 });
 

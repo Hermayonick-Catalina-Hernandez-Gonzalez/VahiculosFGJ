@@ -47,12 +47,22 @@ function generarPDF1(imgData) {
 
     doc.addImage(imgData, 'PNG', 40, 30, 80, 40);
 
+    doc.setFontSize(12);
+    doc.setTextColor(255, 0, 0); // Rojo
+    doc.text("N° 0342", 500, 70);
+
+    // Restablecer color a negro para el resto del documento
+    doc.setTextColor(0, 0, 0);
+
+
     // **Tabla de información del vehículo**
     doc.autoTable({
         startY: 80,
         head: [["MARCA", "SUBMARCA", "SERIE", "MODELO", "PLACA", "N° ECO"]],
         body: [
-            ["Toyota", "Corolla", "3XXAAB", "2022", "ABC-123", "0218"] // Datos de ejemplo
+            ["Toyota", "Corolla", "3XXAAB", "2022", "ABC-123", "0218"],
+            [{ content: "AREA", styles: { textColor: [255, 255, 255], fontStyle: "bold" } },
+            { content: " ", colSpan: 5, styles: { fillColor: [240, 240, 240], textColor: [0, 0, 0], halign: "center" } }]
         ],
         theme: "grid",
         styles: {
@@ -127,43 +137,39 @@ function generarPDF2(imgData) {
     const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'letter' });
 
     // Agregar imagen del logo en la esquina superior izquierda
-    doc.addImage(imgData, 'JPEG', 40, 30, 60, 60);
+    doc.addImage(imgData, 'PNG', 40, 30, 80, 40);
 
     // Encabezado alineado al lado de la imagen
     doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.text("DIRECCIÓN GENERAL DE ADMINISTRACIÓN", 250, 50);
+    doc.text("DIRECCIÓN DE RECURSOS MATERIALES Y SERVICIOS", 220, 60);
+    doc.text("RESGUARDO VEHICULAR", 290, 70);
+
     doc.setFontSize(12);
-    doc.text("DIRECCIÓN GENERAL DE ADMINISTRACIÓN", 120, 70);
-    doc.text("DIRECCIÓN DE RECURSOS MATERIALES Y SERVICIOS", 120, 90);
-    doc.text("RESGUARDO VEHICULAR", 120, 110);
+    doc.setTextColor(255, 0, 0); // Rojo
+    doc.text("N° 0342", 500, 74);
 
-    // Número de folio
-    doc.setFontSize(12);
-    doc.text("N° 0342", 450, 140);
-
-    // Datos generales
-    doc.setFontSize(10);
-    doc.text("FECHA:", 40, 170);
-    doc.text("MUNICIPIO:", 250, 170);
-    doc.text("FGJRM", 340, 170);
-
-    // Tabla de datos
-    const filas = [
-        ["RESGUARDANTE", ""]
-        ["CARGO", ""],
-        ["LICENCIA", ""],
-        ["VIGENCIA", ""],
-        ["FISCALÍA GENERAL", ""],
-        ["FISCALÍA ESPECIALIZADA EN", ""],
-        ["VICEFISCALÍA EN", ""],
-        ["DIRECCIÓN GENERAL", ""],
-        ["DEPARTAMENTO/ÁREA", ""],
-        ["RESGUARDANTE INTERNO", ""],
-        ["CARGO", ""],
-        ["LICENCIA", ""],
-        ["VIGENCIA", ""],
-        ["NÚMERO DE EMPLEADO", ""]
-    ];
-
+    // Restablecer color a negro para el resto del documento
+    doc.setTextColor(0, 0, 0);
+    // **Tabla de información del vehículo**
+    doc.autoTable({
+        startY: 80,
+        body: [
+            ["Fecha", " ", "Municipio", "", "FGJRM", ""] // Datos de ejemplo
+        ],
+        theme: "grid",
+        styles: {
+            fontSize: 10,
+            cellPadding: 5,
+            halign: "center",
+            fillColor: [26, 35, 65],
+            textColor: [0, 0, 0]
+        },
+        alternateRowStyles: {
+            fillColor: [240, 240, 240]
+        }
+    });
     // Generar el PDF
     return doc.output("bloburl"); // Devuelve la URL del PDF
 }
