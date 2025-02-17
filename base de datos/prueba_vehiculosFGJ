@@ -14,12 +14,12 @@ CREATE TABLE usuarios (
 
 -- Crear la tabla empleados
 CREATE TABLE empleados (
-    id int(11) NOT NULL,
+     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre varchar(100) DEFAULT NULL,
     cargo varchar(100) DEFAULT NULL,
     numero_empleado int(11) DEFAULT NULL,
     celular varchar(15) DEFAULT NULL,
-    fiscalia_genera varchar(100) DEFAULT NULL,
+    fiscalia_general varchar(100) DEFAULT NULL,
     fiscalia_especializada_en varchar(100) DEFAULT NULL,
     vicefiscalia_en varchar(100) DEFAULT NULL,
     direccion_general varchar(100) DEFAULT NULL,

@@ -34,7 +34,7 @@ function buscarEmpleados() {
         return;
     }
 
-    let url = `http://localhost/xampp/VehiculosFGJ/php/buscarEmpleado.php?nombre=${resguardante || resguardanteInterno}`;
+    let url = `http://localhost/xampp/VehiculosFGJ/php/buscarEmpleado.php?nombre=${encodeURIComponent(resguardante || resguardanteInterno)}`;
 
     fetch(url)
         .then(response => response.json())
@@ -51,7 +51,18 @@ function buscarEmpleados() {
             } else {
                 if (resguardante) {
                     document.getElementById("cargo").value = data.cargo || "";
-                    localStorage.setItem("cargo", data.cargo || "");  // Guardar en localStorage
+                    document.getElementById("fiscalia_general").value = data.fiscalia_general || "";
+                    document.getElementById("fiscalia_especializada_en").value = data.fiscalia_especializada_en || "";
+                    document.getElementById("vicefiscalia_en").value = data.vicefiscalia_en || "";
+                    document.getElementById("direccion_general").value = data.direccion_general || "";
+                    document.getElementById("departamento_area").value = data.departamento_area || "";
+                    // Guardar en localStorage
+                    localStorage.setItem("cargo", data.cargo || "");
+                    localStorage.setItem("fiscalia_general", data.fiscalia_general || "");
+                    localStorage.setItem("fiscalia_especializada", data.fiscalia_especializada_en || "");
+                    localStorage.setItem("vicefiscalia", data.vicefiscalia_en || "");
+                    localStorage.setItem("direccion_general", data.direccion_general || "");
+                    localStorage.setItem("departamento_area", data.departamento_area || "");
                 }
 
                 if (resguardanteInterno) {
@@ -83,7 +94,10 @@ function buscarEmpleados() {
         });
 }
 
+
 // Limpiar localStorage solo cuando el usuario presiona "Aceptar"
 function finalizarFormulario() {
     localStorage.clear();
 }
+
+

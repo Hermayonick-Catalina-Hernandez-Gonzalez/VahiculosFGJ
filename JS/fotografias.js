@@ -1,12 +1,12 @@
 let videoStream;
 let imagenDestino;
+let contadorExtra = 1;
 
 function abrirCamara(idImagen) {
     imagenDestino = document.getElementById(idImagen);
     const modal = document.getElementById("modalCamara");
     const video = document.getElementById("video");
 
-    // Mostrar modal
     modal.style.display = "flex";
 
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -14,7 +14,6 @@ function abrirCamara(idImagen) {
         return;
     }
     
-    // Acceder a la cámara
     navigator.mediaDevices.getUserMedia({ video: true })
         .then(function (stream) {
             videoStream = stream;
@@ -30,38 +29,29 @@ function tomarFoto() {
     const canvas = document.getElementById("canvas");
     const video = document.getElementById("video");
 
-    // Ajustar el tamaño del canvas al video
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
-    // Dibujar la imagen del video en el canvas
     const ctx = canvas.getContext("2d");
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // Convertir la imagen a URL y asignarla
     const imagenBase64 = canvas.toDataURL("image/png");
     imagenDestino.src = imagenBase64;
 
-    // Guardar la imagen en localStorage para que persista
     localStorage.setItem(imagenDestino.id, imagenBase64);
-
-    // Cerrar la cámara
     cerrarCamara();
 }
 
 function cerrarCamara() {
     const modal = document.getElementById("modalCamara");
 
-    // Detener el stream de la cámara
     if (videoStream) {
         videoStream.getTracks().forEach(track => track.stop());
     }
 
-    // Ocultar el modal
     modal.style.display = "none";
 }
 
-// Cargar imágenes guardadas al cargar la página
 document.addEventListener("DOMContentLoaded", function () {
     const imagenes = document.querySelectorAll("img");
     imagenes.forEach(imagen => {
@@ -72,7 +62,49 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// Limpiar localStorage solo cuando el usuario presiona "Aceptar"
 function finalizarFormulario() {
     localStorage.clear();
+}
+
+function agregarFotoExtra() {
+    const contenedor = document.getElementById("extra-fotos-container");
+
+    let filas = contenedor.getElementsByClassName("foto-apartado-container");
+    let ultimaFila = filas[filas.length - 1];
+
+    if (!ultimaFila || ultimaFila.children.length >= 2) {
+        ultimaFila = document.createElement("div");
+        ultimaFila.classList.add("foto-apartado-container");
+        contenedor.appendChild(ultimaFila);
+    }
+
+    const nuevoApartado = document.createElement("div");
+    nuevoApartado.classList.add("foto-apartado");
+    const idExtra = `extra-dinamico-${contadorExtra}`;
+
+    nuevoApartado.innerHTML = `
+        <p>Extra ${contadorExtra}:</p>
+        <img src="../../img/agregar.png" alt="extra" class="foto-preview" id="${idExtra}" onclick="abrirCamara('${idExtra}')">
+        <button class="btn-remove" onclick="eliminarFotoExtra(this)">❌</button>
+    `;
+
+    ultimaFila.appendChild(nuevoApartado);
+    contadorExtra++;
+}
+
+function eliminarFotoExtra(boton) {
+    const apartado = boton.parentElement;
+    const fila = apartado.parentElement;
+
+    apartado.remove();
+
+    if (fila.children.length === 0) {
+        fila.remove();
+    }
+
+    // Si no quedan imágenes, reiniciar el contador a 1
+    const contenedor = document.getElementById("extra-fotos-container");
+    if (contenedor.getElementsByClassName("foto-apartado").length === 0) {
+        contadorExtra = 1;
+    }
 }

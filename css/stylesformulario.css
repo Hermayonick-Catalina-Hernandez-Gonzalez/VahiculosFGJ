@@ -180,16 +180,23 @@ iframe {
 
 /* Contenedor de imágenes */
 .foto-apartado-container {
-    background-color: #ffffff;
     display: flex;
     justify-content: center;
-    width: 100%;
-    max-width: 800px;
+    width: 50%;
+    max-width: 500px;
+    flex-wrap: wrap;
+}
+
+.extra-fotos-container {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    max-width: 500px;
     flex-wrap: wrap;
 }
 
 .foto-apartado {
-    width: 48%;
+    width: 50%;
     text-align: center;
 }
 
@@ -200,7 +207,7 @@ iframe {
 }
 
 .foto-preview {
-    width: 70%;
+    width: 90%;
     height: auto;
     border-radius: 10px;
     background-color: #ffffff;
@@ -212,15 +219,16 @@ iframe {
     transition: 0.3s;
 }
 
-.foto-preview:hover {
-    background-color: #d6d6d6;
-}
-
 .foto-apartado p{
     font-size: 16px;
     font-weight: bold;
     color: #1A2341;
     margin-bottom: 10px;
+}
+
+.foto-apartado img {
+    max-width: 100%;
+    height: auto;
 }
 
 /* Estilos del la camara */
@@ -285,6 +293,21 @@ video {
     color: white;
     border: none;
     cursor: pointer;
+}
+
+.btn-remove {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.btn-remove:hover {
+    background: darkred;
 }
 
 .suggestions {

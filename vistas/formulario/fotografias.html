@@ -37,7 +37,7 @@
                             onclick="abrirCamara('foto-frontal')">
                     </div>
                     <div class="foto-apartado">
-                        <p>Laod Posterior:</p>
+                        <p>Lado Posterior:</p>
                         <img src="../../img/agregar.png" alt="Foto Posterior"
                             class="foto-preview" id="foto-posterior"
                             onclick="abrirCamara('foto-posterior')">
@@ -58,6 +58,8 @@
                             onclick="abrirCamara('foto-izquierdo')">
                     </div>
                 </div>
+                <button onclick="agregarFotoExtra()" class="btn">Agregar Fotografía Extra</button>
+                <div id="extra-fotos-container"></div>
                 <button  onclick="final()"  class="btn">Guardar</button>
             </div>
         </div>
