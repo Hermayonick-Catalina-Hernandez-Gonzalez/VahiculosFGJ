@@ -30,38 +30,35 @@
 
         <!-- Sección derecha (formulario) -->
         <div class="right-section">
-            <form id="formularioVerificacion">
-                <h1>Verificacion Vehicular</h1>
+            <h1>Verificacion Vehicular</h1>
+            <!-- Menú para las categorías -->
+            <div class="tabs">
+                <button class="tablink" id="exterior"
+                    onclick="openTab(event, 'Exterior')">Exterior</button>
+                <button class="tablink" id="interior"
+                    onclick="openTab(event, 'Interior')">Interior</button>
+                <button class="tablink" id="accesorios"
+                    onclick="openTab(event, 'Accesorios')">Accesorios y
+                    otros</button>
+            </div>
 
-                <!-- Menú para las categorías -->
-                <div class="tabs">
-                    <button class="tablink" id="exterior"
-                        onclick="openTab(event, 'Exterior')">Exterior</button>
-                    <button class="tablink" id="interior"
-                        onclick="openTab(event, 'Interior')">Interior</button>
-                    <button class="tablink" id="accesorios"
-                        onclick="openTab(event, 'Accesorios')">Accesorios y
-                        otros</button>
-                </div>
+            <!-- Contenido para Exterior, Interior y Accesorios -->
+            <div id="Exterior" class="tabcontent">
+                <iframe src="../../tablas/exterio.html" width="100%"
+                    height="500px" title="Tabla Exterior"></iframe>
+            </div>
 
-                <!-- Contenido para Exterior, Interior y Accesorios -->
-                <div id="Exterior" class="tabcontent">
-                    <iframe src="../../tablas/exterio.html" width="100%"
-                        height="500px" title="Tabla Exterior"></iframe>
-                </div>
+            <div id="Interior" class="tabcontent">
+                <iframe src="../../tablas/interior.html" width="100%"
+                    height="500px" title="Tabla Exterior"></iframe>
+            </div>
 
-                <div id="Interior" class="tabcontent">
-                    <iframe src="../../tablas/interior.html" width="100%"
-                        height="500px" title="Tabla Exterior"></iframe>
-                </div>
+            <div id="Accesorios" class="tabcontent">
+                <iframe src="../../tablas/asesorios.html" width="100%"
+                    height="500px" title="Tabla Exterior"></iframe>
+            </div>
 
-                <div id="Accesorios" class="tabcontent">
-                    <iframe src="../../tablas/asesorios.html" width="100%"
-                        height="500px" title="Tabla Exterior"></iframe>
-                </div>
-            </form>
-            <button class="btn" type="button"
-                onclick="nextTab()">Siguiente</button>
+            <button class="btn" type="button"  onclick="nextTab()">Siguiente</button>
         </div>
 
         <script src="../../JS/activado.js"></script>
