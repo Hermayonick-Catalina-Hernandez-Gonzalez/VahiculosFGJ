@@ -84,8 +84,9 @@ function agregarFotoExtra() {
 
     nuevoApartado.innerHTML = `
         <p>Extra ${contadorExtra}:</p>
+        <button class="btn-remove" onclick="eliminarFotoExtra(this)"> ✖</button>
         <img src="../../img/agregar.png" alt="extra" class="foto-preview" id="${idExtra}" onclick="abrirCamara('${idExtra}')">
-        <button class="btn-remove" onclick="eliminarFotoExtra(this)">❌</button>
+        <textarea id="observaciones" name="observaciones" rows="2" cols="5"  placeholder="Observaciones"></textarea>
     `;
 
     ultimaFila.appendChild(nuevoApartado);

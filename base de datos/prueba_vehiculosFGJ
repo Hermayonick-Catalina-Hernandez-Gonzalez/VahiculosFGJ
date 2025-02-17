@@ -14,7 +14,7 @@ CREATE TABLE usuarios (
 
 -- Crear la tabla empleados
 CREATE TABLE empleados (
-     id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     nombre varchar(100) DEFAULT NULL,
     cargo varchar(100) DEFAULT NULL,
     numero_empleado int(11) DEFAULT NULL,
