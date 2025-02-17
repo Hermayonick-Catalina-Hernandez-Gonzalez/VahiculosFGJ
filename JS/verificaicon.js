@@ -1,86 +1,65 @@
-
-document.getElementById('formularioVerificacion').addEventListener('submit', function(event) {
-    event.preventDefault(); // Previene que la página se recargue
-});
-
-function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-
-    // Ocultar todas las pestañas
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-
-    // Eliminar la clase "active" de todas las pestañas
-    tablinks = document.getElementsByClassName("tablink");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-
-    // Mostrar la pestaña seleccionada
-    document.getElementById(tabName).style.display = "block";
-
-    // Añadir la clase "active" al botón de la pestaña
-    evt.currentTarget.className += " active";
-}
-
-// Al cargar la página, mostrar la primera pestaña por defecto
-document.getElementById("exterior").click();
-
-
-function openTab(evt, tabName) {
+document.addEventListener("DOMContentLoaded", function () {
     // Ocultar todas las pestañas
     const tabcontent = document.getElementsByClassName("tabcontent");
     for (let i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
     }
 
-    // Eliminar la clase "active" de todos los botones de pestañas
-    const tablinks = document.getElementsByClassName("tablink");
-    for (let i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    // Mostrar la pestaña "Exterior" por defecto
+    const defaultTab = document.getElementById("Exterior");
+    const defaultButton = document.getElementById("exterior");
+
+    if (defaultTab && defaultButton) {
+        defaultTab.style.display = "block"; // Mostrar pestaña
+        defaultButton.classList.add("active"); // Marcar botón como activo
     }
 
-    // Mostrar la pestaña actual y agregar una clase "active" al botón que abrió la pestaña
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
-}
+    // Evento para cambiar de pestaña
+    document.querySelectorAll(".tablink").forEach(button => {
+        button.addEventListener("click", function (event) {
+            openTab(event, this.getAttribute("data-tab"));
+        });
+    });
 
-// Función para manejar el botón "Siguiente"
-function nextTab() {
-    const tabs = ["Exterior", "Interior", "Accesorios"];
-    let currentTab = tabs.findIndex(tab => document.getElementById(tab).style.display === "block");
-
-    if (currentTab < tabs.length - 1) {
-        // Mostrar la siguiente pestaña
-        openTab({ currentTarget: document.getElementById(tabs[currentTab + 1].toLowerCase()) }, tabs[currentTab + 1]);
-    } else {
-        // Redirigir a la página de fotografías
-        window.location.href = "../formulario/fotografias.html";
-    }
-}
-
-// Inicializar la primera pestaña como activa
-document.addEventListener("DOMContentLoaded", function() {
-    openTab({ currentTarget: document.getElementById("exterior") }, "Exterior");
-});
-
-
-document.addEventListener("DOMContentLoaded", function () {
+    // Cargar valores de los radios desde localStorage
     const radios = document.querySelectorAll('input[type="radio"]');
-
-    // Cargar valores guardados en localStorage
     radios.forEach(radio => {
         const savedValue = localStorage.getItem(radio.name);
         if (savedValue && radio.value === savedValue) {
             radio.checked = true;
         }
-
-        // Escuchar cambios y guardar en localStorage
         radio.addEventListener("change", function () {
             localStorage.setItem(radio.name, this.value);
         });
     });
 });
 
+function openTab(evt, tabName) {
+    // Ocultar todas las pestañas
+    document.querySelectorAll(".tabcontent").forEach(tab => {
+        tab.style.display = "none";
+    });
+
+    // Eliminar clase "active" de todos los botones
+    document.querySelectorAll(".tablink").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    // Mostrar la pestaña seleccionada y activar el botón correspondiente
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.classList.add("active");
+}
+
+// Función para manejar el botón "Siguiente"
+function nextTab() {
+    const tabs = ["Exterior", "Interior", "Accesorios"];
+    let currentTabIndex = tabs.findIndex(tab => document.getElementById(tab).style.display === "block");
+
+    if (currentTabIndex < tabs.length - 1) {
+        // Mover a la siguiente pestaña
+        document.getElementById(tabs[currentTabIndex + 1].toLowerCase()).click();
+    } else {
+        // Redirigir a la página de fotografías
+        window.location.href = "../formulario/fotografias.html";
+    }
+}
