@@ -53,6 +53,7 @@ function cerrarCamara() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+    // Restaurar imágenes guardadas
     const imagenes = document.querySelectorAll("img");
     imagenes.forEach(imagen => {
         const imagenGuardada = localStorage.getItem(imagen.id);
@@ -60,6 +61,9 @@ document.addEventListener("DOMContentLoaded", function () {
             imagen.src = imagenGuardada;
         }
     });
+
+    // Restaurar fotos extras
+    restaurarFotosExtras();
 });
 
 function finalizarFormulario() {
@@ -84,20 +88,28 @@ function agregarFotoExtra() {
 
     nuevoApartado.innerHTML = `
         <p>Extra ${contadorExtra}:</p>
-        <button class="btn-remove" onclick="eliminarFotoExtra(this)"> ✖</button>
+        <button class="btn-remove" onclick="eliminarFotoExtra(this, '${idExtra}')"> ✖</button>
         <img src="../../img/agregar.png" alt="extra" class="foto-preview" id="${idExtra}" onclick="abrirCamara('${idExtra}')">
-        <textarea id="observaciones" name="observaciones" rows="2" cols="5"  placeholder="Observaciones"></textarea>
+        <textarea id="observaciones-${idExtra}" name="observaciones" rows="2" cols="5" placeholder="Observaciones"></textarea>
     `;
 
     ultimaFila.appendChild(nuevoApartado);
+
+    // Guardar en localStorage
+    guardarFotoExtra(idExtra);
     contadorExtra++;
 }
 
-function eliminarFotoExtra(boton) {
+function eliminarFotoExtra(boton, idImagen) {
     const apartado = boton.parentElement;
     const fila = apartado.parentElement;
 
     apartado.remove();
+    localStorage.removeItem(idImagen);
+
+    let fotosExtras = JSON.parse(localStorage.getItem("fotosExtras")) || [];
+    fotosExtras = fotosExtras.filter(id => id !== idImagen);
+    localStorage.setItem("fotosExtras", JSON.stringify(fotosExtras));
 
     if (fila.children.length === 0) {
         fila.remove();
@@ -108,4 +120,49 @@ function eliminarFotoExtra(boton) {
     if (contenedor.getElementsByClassName("foto-apartado").length === 0) {
         contadorExtra = 1;
     }
+}
+
+function guardarFotoExtra(idImagen) {
+    let fotosExtras = JSON.parse(localStorage.getItem("fotosExtras")) || [];
+    if (!fotosExtras.includes(idImagen)) {
+        fotosExtras.push(idImagen);
+    }
+    localStorage.setItem("fotosExtras", JSON.stringify(fotosExtras));
+}
+
+function restaurarFotosExtras() {
+    let fotosExtras = JSON.parse(localStorage.getItem("fotosExtras")) || [];
+
+    fotosExtras.forEach(idExtra => {
+        const contenedor = document.getElementById("extra-fotos-container");
+
+        let filas = contenedor.getElementsByClassName("foto-apartado-container");
+        let ultimaFila = filas[filas.length - 1];
+
+        if (!ultimaFila || ultimaFila.children.length >= 2) {
+            ultimaFila = document.createElement("div");
+            ultimaFila.classList.add("foto-apartado-container");
+            contenedor.appendChild(ultimaFila);
+        }
+
+        const nuevoApartado = document.createElement("div");
+        nuevoApartado.classList.add("foto-apartado");
+
+        nuevoApartado.innerHTML = `
+            <p>Extra ${idExtra.split('-')[2]}:</p>
+            <button class="btn-remove" onclick="eliminarFotoExtra(this, '${idExtra}')"> ✖</button>
+            <img src="../../img/agregar.png" alt="extra" class="foto-preview" id="${idExtra}" onclick="abrirCamara('${idExtra}')">
+            <textarea id="observaciones-${idExtra}" name="observaciones" rows="2" cols="5" placeholder="Observaciones"></textarea>
+        `;
+
+        ultimaFila.appendChild(nuevoApartado);
+
+        // Restaurar imagen si existe en localStorage
+        const imagenGuardada = localStorage.getItem(idExtra);
+        if (imagenGuardada) {
+            document.getElementById(idExtra).src = imagenGuardada;
+        }
+    });
+
+    contadorExtra = fotosExtras.length > 0 ? parseInt(fotosExtras[fotosExtras.length - 1].split('-')[2]) + 1 : 1;
 }
