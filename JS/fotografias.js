@@ -66,10 +66,6 @@ document.addEventListener("DOMContentLoaded", function () {
     restaurarFotosExtras();
 });
 
-function finalizarFormulario() {
-    localStorage.clear();
-}
-
 function agregarFotoExtra() {
     const contenedor = document.getElementById("extra-fotos-container");
 
@@ -166,3 +162,10 @@ function restaurarFotosExtras() {
 
     contadorExtra = fotosExtras.length > 0 ? parseInt(fotosExtras[fotosExtras.length - 1].split('-')[2]) + 1 : 1;
 }
+
+
+// Limpiar localStorage solo cuando el usuario presiona "Aceptar"
+function finalizarFormulario() {
+    localStorage.clear();
+}
+

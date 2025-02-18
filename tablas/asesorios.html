@@ -111,3 +111,32 @@
     <textarea id="observaciones" name="observaciones" rows="4" cols="50"></textarea>
 </div>
 <script src="../../JS/verificaicon.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        window.parent.postMessage({ type: "loadRadios" }, "*");
+    
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener("change", function () {
+                window.parent.postMessage({
+                    type: "saveRadio",
+                    name: radio.name,
+                    value: radio.value
+                }, "*");
+            });
+        });
+    
+        window.addEventListener("message", function (event) {
+            if (event.data.type === "restoreRadios") {
+                const savedValue = event.data.values[event.data.name];
+                if (savedValue) {
+                    const radio = document.querySelector(`input[name="${event.data.name}"][value="${savedValue}"]`);
+                    if (radio) {
+                        radio.checked = true;
+                    }
+                }
+            }
+        });
+    });
+    </script>
+    

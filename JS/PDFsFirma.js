@@ -1,17 +1,3 @@
-function final() {
-    generarPDF();
-    // Luego de generar el PDF, rediriges a la página de los PDFs
-    Swal.fire({
-        icon: 'success',
-        title: '¡Se ha Guardo Exitosamente!',
-        timer: 1500,
-        showConfirmButton: false,
-        backdrop: false
-    }).then(() => {
-        // Redirige a la página de PDFs
-        window.location.href = '../formulario/pdfs.html';  // Ajusta esta ruta según sea necesario
-    });
-}
 function generarPDF() {
     const { jsPDF } = window.jspdf;
 
@@ -37,7 +23,7 @@ function generarPDF() {
 
     };
 }
-function generarPDF1(imgData) {
+function descargarPDFConFirma(imagenFirma) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({
         orientation: 'portrait',
@@ -45,6 +31,7 @@ function generarPDF1(imgData) {
         format: [612, 1200]
     });
 
+    let imgData = "../../img/logo.png"; // Imagen del logo
     doc.addImage(imgData, 'PNG', 40, 30, 80, 40);
 
     doc.setFontSize(12);
@@ -121,82 +108,23 @@ function generarPDF1(imgData) {
         y += 10;
     });
 
-    y += 30; // Añadir espacio antes de la firma
+
     doc.setFont("helvetica", "bold");
     doc.text("Firma del Resguardante Interno", doc.internal.pageSize.getWidth() / 2, y, { align: 'center' });
-    y += 40;
+
+    y += 40; // Espacio para la firma
+
+    // Agregar la firma si está disponible
+    if (imagenFirma) {
+        doc.addImage(imagenFirma, "PNG", doc.internal.pageSize.getWidth() / 2 - 50, y - 30, 100, 50);
+    }
+
+    // Dibujar la línea de firma
     doc.line(doc.internal.pageSize.getWidth() / 2 - 80, y + 5, doc.internal.pageSize.getWidth() / 2 + 80, y + 5);
+
     y += 10;
     doc.text("Nombre y Firma", doc.internal.pageSize.getWidth() / 2, y + 12, { align: 'center' });
 
-    return doc.output("bloburl"); // Devuelve la URL para previsualización
+    // Descargar el PDF con la firma
+    doc.save("Verificación.pdf");
 }
-
-function generarPDF2(imgData) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'letter' });
-
-    // Agregar imagen del logo
-    doc.addImage(imgData, 'PNG', 40, 30, 80, 40);
-
-    // Encabezado alineado a la derecha de la imagen
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
-    doc.text("DIRECCIÓN GENERAL DE ADMINISTRACIÓN", 250, 50);
-    doc.text("DIRECCIÓN DE RECURSOS MATERIALES Y SERVICIOS", 220, 60);
-    doc.text("RESGUARDO VEHICULAR", 290, 70);
-
-    doc.setFontSize(12);
-    doc.setTextColor(255, 0, 0); // Rojo
-    doc.text("N° 0342", 500, 74);
-    doc.setTextColor(0, 0, 0); // Restablecer a negro
-
-    let y = 100; // Posición inicial
-
-    // Función para dibujar una celda de tabla con alineación centrada
-    function drawCell(x, y, width, height, text) {
-        doc.rect(x, y, width, height); // Dibuja el recuadro
-        doc.setFontSize(10);
-        doc.text(text, x + 5, y + 13); // Ajuste de margen dentro de la celda
-    }
-
-    // Fila de "Fecha", "Municipio", "FGJRM"
-    drawCell(40, y, 180, 20, "FECHA:");
-    drawCell(220, y, 180, 20, "MUNICIPIO:");
-    drawCell(400, y, 170, 20, "FGJRM:");
-    y += 20;
-
-    // Dibujar la tabla de "RESGUARDANTE"
-    let fields = [
-        "RESGUARDANTE:", "CARGO:", "LICENCIA:", "VIGENCIA:", "FISCALÍA GENERAL:",
-        "FISCALÍA ESPECIALIZADA EN:", "VICEFISCALÍA EN:", "DIRECCIÓN GENERAL:", "DEPARTAMENTO/ÁREA:"
-    ];
-
-    fields.forEach(label => {
-        drawCell(40, y, 530, 20, label);
-        y += 20;
-    });
-
-    // Separador
-    y += 10;
-
-    // RESGUARDANTE INTERNO (Encabezado en negrita)
-    doc.setFont('helvetica');
-    drawCell(40, y, 530, 20, "RESGUARDANTE INTERNO:");
-    doc.setFont('helvetica', 'normal');
-    y += 20;
-
-    // Dibujar la tabla de "RESGUARDANTE INTERNO"
-    let internalFields = ["CARGO:", "LICENCIA:", "VIGENCIA:", "NÚMERO DE EMPLEADO:", "CELULAR:"];
-    internalFields.forEach(label => {
-        drawCell(40, y, 530, 20, label);
-        y += 20;
-    });
-
-    // Última línea para cerrar la tabla
-    drawCell(40, y, 530, 20, "FIRMA DEL RESGUARDANTE:");
-
-    // Generar el PDF y devolver la URL para previsualización
-    return doc.output('bloburl');
-}
-
