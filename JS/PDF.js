@@ -191,10 +191,6 @@ function generarPDF2(imgData) {
         drawCell(40, y, 530, 20, label);
         y += 20;
     });
-
-    // Última línea para cerrar la tabla
-    drawCell(40, y, 530, 20, "FIRMA DEL RESGUARDANTE:");
-
     // Generar el PDF y devolver la URL para previsualización
     return doc.output('bloburl');
 }
