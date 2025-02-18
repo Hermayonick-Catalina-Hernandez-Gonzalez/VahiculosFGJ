@@ -11,7 +11,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificación Vehicular</title>
+    <title>Resguardo Vehicular</title>
     <link rel="shortcut icon" href="../img/Icono.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/stylesInicio.css">
@@ -29,7 +29,7 @@ $result = $conn->query($sql);
             </div>
         </div>
         <div class="titulo">
-            <h1>Verificación Vehicular</h1>
+            <h1>Resguardo Vehicular</h1>
         </div>
         <div class="logo">
             <img src="../img/Logo.png" alt="Logo FGJ">

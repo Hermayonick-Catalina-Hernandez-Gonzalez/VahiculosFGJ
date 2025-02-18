@@ -1,17 +1,3 @@
-function final() {
-    generarPDF();
-    // Luego de generar el PDF, rediriges a la página de los PDFs
-    Swal.fire({
-        icon: 'success',
-        title: '¡Se ha Guardo Exitosamente!',
-        timer: 1500,
-        showConfirmButton: false,
-        backdrop: false
-    }).then(() => {
-        // Redirige a la página de PDFs
-        window.location.href = '../formulario/pdfs.html';  // Ajusta esta ruta según sea necesario
-    });
-}
 function generarPDF() {
     const { jsPDF } = window.jspdf;
 

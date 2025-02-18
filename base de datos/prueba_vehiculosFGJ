@@ -52,8 +52,8 @@ VALUES
 -- Insertar vehículos de prueba
 INSERT INTO vehiculos (numero_economico, placa, serie, color, clase_vehiculo, marca_vehiculo, submarca, modelo_vehiculo) VALUES
 (101, 'ABC-123', '1A2B3C4D5E6F7G8H9', 'Rojo', 'Sedán', 'Toyota', 'Corolla', '2020'),
-(102, 'XYZ-456', '9H8G7F6E5D4C3B2A1', 'Azul', 'SUV', 'Honda', 'CR-V', '2019'),
-(103, 'LMN-789', '0Z9Y8X7W6V5U4T3S2', 'Negro', 'Camión', 'Ford', 'F-150', '2021'),
+(102, 'XYZ-456', '9H8G7F6E5D4C3B2A1', 'Azul', 'Camioneta Blindada', 'Honda', 'CR-V', '2019'),
+(103, 'LMN-789', '0Z9Y8X7W6V5U4T3S2', 'Negro', 'Camioneta Blindada', 'Ford', 'F-150', '2021'),
 (104, 'PQR-012', '3C4B5A6D7E8F9G1H2', 'Blanco', 'Pickup', 'Chevrolet', 'Silverado', '2022'),
 (105, 'STU-345', '1H2G3F4E5D6C7B8A9', 'Gris', 'Sedán', 'Nissan', 'Altima', '2020');
 

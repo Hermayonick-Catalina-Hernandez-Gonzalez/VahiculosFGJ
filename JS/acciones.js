@@ -107,3 +107,16 @@ function buscarHistorial() {
     });
 }
 
+function final() {
+    // Mostrar el mensaje de éxito antes de redirigir
+    Swal.fire({
+        icon: 'success',
+        title: '¡Se ha Guardado Exitosamente!',
+        timer: 1500,
+        showConfirmButton: false,
+        backdrop: false
+    }).then(() => {
+        // Redirige a la página de PDFs después de generar el PDF
+        window.location.href = '../../vistas/formulario/pdfs.html';  // Ajusta esta ruta según sea necesario
+    });
+}

@@ -21,16 +21,13 @@ function openTab(evt, tabName) {
     evt.currentTarget.className += " active";
 }
 
-// Inicializar la primera pestaña como activa al cargar la página
+
 document.addEventListener("DOMContentLoaded", function () {
-    // Verificar si ya tiene la clase 'active' al cargar
     const reglasTab = document.getElementById("reglas");
-    if (!reglasTab.classList.contains("active")) {
-        openTab({ currentTarget: reglasTab }, "Reglas");
-    }
+    openTab({ currentTarget: reglasTab }, "Reglas");
 });
 
-//funciones par ala firma 
+// Funciones para la firma
 function abrirFirma() {
     document.getElementById("modalFirma").style.display = "flex";
 }
@@ -40,7 +37,6 @@ function cerrarFirma() {
 }
 
 // Funciones para capturar la firma en canvas
-// Detectar si es un dispositivo táctil
 let esTactil = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
 let canvas = document.getElementById("canvasFirma");
@@ -108,10 +104,9 @@ function guardarFirma() {
     Swal.fire({
         icon: "success",
         title: "Datos Guardados",
-        text: "Los datos han sido registrados correctamete.",
+        text: "Los datos han sido registrados correctamente.",
     });
 
     cerrarFirma();
     descargarPDFConFirma(imagenFirma);
-
 }
