@@ -21,11 +21,16 @@ function openTab(evt, tabName) {
     evt.currentTarget.className += " active";
 }
 
-
 document.addEventListener("DOMContentLoaded", function () {
+    // Se asegura de que la pestaña 'Reglas' esté activa y se muestre automáticamente
     const reglasTab = document.getElementById("reglas");
     openTab({ currentTarget: reglasTab }, "Reglas");
+
+    // Mostrar el iframe vacío al inicio
+    const iframe1 = document.getElementById("preview1");
+    iframe1.src = "";  // Dejarlo vacío o configurar una fuente si lo necesitas
 });
+
 
 // Funciones para la firma
 function abrirFirma() {

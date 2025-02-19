@@ -107,18 +107,19 @@ function generarPDF1(imgData) {
 
     // Justificar el texto y agregar salto de línea después de cada párrafo
     reglas.forEach((texto) => {
-        const lines = doc.splitTextToSize(texto, 530);
-        lines.forEach((line) => {
-            doc.text(line, 40, y, {
-                align: 'justify', // Asegura la justificación
+        const lines = doc.splitTextToSize(texto, 530); // Ajuste del ancho para dividir el texto adecuadamente
+        lines.forEach((line, index) => {
+            const lineY = y + (index * 15); // Incrementar la posición Y para cada línea
+            doc.text(line, 40, lineY, {
+                align: 'justify', // Justifica el texto
                 lineHeightFactor: 1.5,
                 maxWidth: 530
             });
-            y += 15;
         });
-
-        y += 10;
+        y += lines.length * 15 + 10; // Incrementar la posición Y después de cada bloque de texto
     });
+
+
 
     y += 30; // Añadir espacio antes de la firma
     doc.setFont("helvetica", "bold");
@@ -133,12 +134,15 @@ function generarPDF1(imgData) {
 
 function generarPDF2(imgData) {
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'letter' });
+    const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'pt',
+        format: [612, 1400]
+    });
 
-    // Agregar imagen del logo
     doc.addImage(imgData, 'PNG', 40, 30, 80, 40);
 
-    // Encabezado alineado a la derecha de la imagen
+    // Encabezado
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
     doc.text("DIRECCIÓN GENERAL DE ADMINISTRACIÓN", 250, 50);
@@ -146,52 +150,96 @@ function generarPDF2(imgData) {
     doc.text("RESGUARDO VEHICULAR", 290, 70);
 
     doc.setFontSize(12);
-    doc.setTextColor(255, 0, 0); // Rojo
+    doc.setTextColor(255, 0, 0);
     doc.text("N° 0342", 500, 74);
-    doc.setTextColor(0, 0, 0); // Restablecer a negro
+    doc.setTextColor(0, 0, 0);
 
-    let y = 100; // Posición inicial
+    let y = 100;
 
-    // Función para dibujar una celda de tabla con alineación centrada
-    function drawCell(x, y, width, height, text) {
-        doc.rect(x, y, width, height); // Dibuja el recuadro
+    function drawCell(x, y, width, height, text, fillColor = [255, 255, 255]) {
+        doc.setFillColor(fillColor[0], fillColor[1], fillColor[2]);
+        doc.rect(x, y, width, height, 'F'); // Relleno
+        doc.rect(x, y, width, height); // Borde
         doc.setFontSize(10);
-        doc.text(text, x + 5, y + 13); // Ajuste de margen dentro de la celda
+        doc.setTextColor(0, 0, 0);
+        doc.text(text, x + 5, y + 13);
     }
 
-    // Fila de "Fecha", "Municipio", "FGJRM"
-    drawCell(40, y, 180, 20, "FECHA:");
-    drawCell(220, y, 180, 20, "MUNICIPIO:");
-    drawCell(400, y, 170, 20, "FGJRM:");
-    y += 20;
+    // Datos generales 
+    drawCell(40, y, 80, 20, "FECHA:", [220, 220, 220]);   // Reducido de 120 a 80
+    drawCell(120, y, 100, 20, "");  // Reducido de 190 a 150
+    drawCell(220, y, 90, 20, "MUNICIPIO:", [220, 220, 220]);  // Reducido de 100 a 90
+    drawCell(300, y, 120, 20, "");  // Reducido de 120 a 150
+    drawCell(400, y, 80, 20, "FGJRM:", [220, 220, 220]);  // Reducido de 120 a 80
+    drawCell(480, y, 90, 20, "");  // Reducido de 160 a 120
+    y += 30;
 
-    // Dibujar la tabla de "RESGUARDANTE"
+
     let fields = [
         "RESGUARDANTE:", "CARGO:", "LICENCIA:", "VIGENCIA:", "FISCALÍA GENERAL:",
         "FISCALÍA ESPECIALIZADA EN:", "VICEFISCALÍA EN:", "DIRECCIÓN GENERAL:", "DEPARTAMENTO/ÁREA:"
     ];
-
     fields.forEach(label => {
-        drawCell(40, y, 530, 20, label);
+        drawCell(40, y, 160, 20, label);
+        drawCell(200, y, 370, 20, "");
         y += 20;
     });
-
-    // Separador
     y += 10;
 
-    // RESGUARDANTE INTERNO (Encabezado en negrita)
-    doc.setFont('helvetica');
-    drawCell(40, y, 530, 20, "RESGUARDANTE INTERNO:");
+    let internalFields = ["RESGUARDANTE INTERNO:", "CARGO:", "LICENCIA:", "VIGENCIA:", "NÚMERO EMPLEADO:", "CELULAR:"];
+    internalFields.forEach(label => {
+        drawCell(40, y, 160, 20, label);
+        drawCell(200, y, 370, 20, "");
+        y += 20;
+    });
+    y += 10;
+
+    // Datos de la unidad
+    doc.setFont('helvetica', 'bold');
+    doc.text("DATOS DE LA UNIDAD:", 250, 460);
     doc.setFont('helvetica', 'normal');
     y += 20;
 
-    // Dibujar la tabla de "RESGUARDANTE INTERNO"
-    let internalFields = ["CARGO:", "LICENCIA:", "VIGENCIA:", "NÚMERO DE EMPLEADO:", "CELULAR:"];
-    internalFields.forEach(label => {
-        drawCell(40, y, 530, 20, label);
+    //tabla de unidad
+    let unidadHeaders = ["PLACA", "N° ECONÓMICO", "SERIE", "COLOR"];
+    let unidadData = [["ABC-123", "1001", "XYZ789456", "Azul"]];
+
+    let unidadH = ["CLASE", "MARCA", "SUBMARCA", "MODELO"];
+    let unidadD = [["Sedán", "Toyota", "Corolla", "2022"]];
+
+    // Dibujar primera tabla (Unidad)
+    doc.setFont('helvetica', 'bold');
+    unidadHeaders.forEach((label, index) => {
+        drawCell(40 + (index * 130), y, 130, 20, label); // Sin fondo ni borde
+    });
+    y += 20;
+
+    doc.setFont('helvetica', 'normal');
+    unidadData.forEach(row => {
+        row.forEach((data, index) => {
+            drawCell(40 + (index * 130), y, 130, 20, data);
+        });
         y += 20;
     });
-    // Generar el PDF y devolver la URL para previsualización
+
+    // Espacio entre tablas
+    y += 10;
+
+    // Dibujar segunda tabla (Clase, Marca, etc.)
+    doc.setFont('helvetica', 'bold');
+    unidadH.forEach((label, index) => {
+        drawCell(40 + (index * 130), y, 130, 20, label); // Sin fondo ni borde
+    });
+    y += 20;
+
+    doc.setFont('helvetica', 'normal');
+    unidadD.forEach(row => {
+        row.forEach((data, index) => {
+            drawCell(40 + (index * 130), y, 130, 20, data);
+        });
+        y += 20;
+    });
+
     return doc.output('bloburl');
 }
 

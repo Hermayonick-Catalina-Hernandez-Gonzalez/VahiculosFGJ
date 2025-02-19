@@ -1,28 +1,4 @@
-function generarPDF() {
-    const { jsPDF } = window.jspdf;
 
-    const img = new Image();
-    img.src = '../img/Logo.png';
-    img.src = '../../img/Logo.png'; // Ajusta la ruta si es necesario
-
-    img.onload = function () {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0);
-        const imgData = canvas.toDataURL('image/png'); // Convertir la imagen a base64
-
-        // Generar URLs de los PDFs
-        const pdf1 = generarPDF1(imgData);
-        const pdf2 = generarPDF2(imgData);
-
-        // Mostrar en iframes dentro de la página
-        document.getElementById("preview1").src = pdf1;
-        document.getElementById("preview2").src = pdf2;
-
-    };
-}
 function descargarPDFConFirma(imagenFirma) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({
