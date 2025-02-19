@@ -144,7 +144,7 @@ function generarPDF2(imgData) {
 
     // Encabezado
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
+    doc.setFontSize(10);
     doc.text("DIRECCIÓN GENERAL DE ADMINISTRACIÓN", 250, 50);
     doc.text("DIRECCIÓN DE RECURSOS MATERIALES Y SERVICIOS", 220, 60);
     doc.text("RESGUARDO VEHICULAR", 290, 70);
@@ -160,7 +160,7 @@ function generarPDF2(imgData) {
         doc.setFillColor(fillColor[0], fillColor[1], fillColor[2]);
         doc.rect(x, y, width, height, 'F'); // Relleno
         doc.rect(x, y, width, height); // Borde
-        doc.setFontSize(10);
+        doc.setFontSize(9);
         doc.setTextColor(0, 0, 0);
         doc.text(text, x + 5, y + 13);
     }
@@ -180,16 +180,24 @@ function generarPDF2(imgData) {
         "FISCALÍA ESPECIALIZADA EN:", "VICEFISCALÍA EN:", "DIRECCIÓN GENERAL:", "DEPARTAMENTO/ÁREA:"
     ];
     fields.forEach(label => {
-        drawCell(40, y, 160, 20, label);
-        drawCell(200, y, 370, 20, "");
+        drawCell(40, y, 160, 20, ""); // Celda vacía para el label
+        drawCell(200, y, 370, 20, ""); // Celda vacía para la respuesta
+
+        let textX = 40 + 160 - 5; // Alineación a la derecha dentro de la celda
+        doc.text(label, textX, y + 14, { align: "right" }); // Alinear a la derecha y centrar verticalmente
+
         y += 20;
     });
     y += 10;
 
     let internalFields = ["RESGUARDANTE INTERNO:", "CARGO:", "LICENCIA:", "VIGENCIA:", "NÚMERO EMPLEADO:", "CELULAR:"];
     internalFields.forEach(label => {
-        drawCell(40, y, 160, 20, label);
-        drawCell(200, y, 370, 20, "");
+        drawCell(40, y, 160, 20, ""); // Celda vacía para el label
+        drawCell(200, y, 370, 20, ""); // Celda vacía para la respuesta
+
+        let textX = 40 + 160 - 5; // Alineación a la derecha dentro de la celda
+        doc.text(label, textX, y + 14, { align: "right" }); // Alinear a la derecha y centrar verticalmente
+
         y += 20;
     });
     y += 10;
@@ -210,9 +218,11 @@ function generarPDF2(imgData) {
     // Dibujar primera tabla (Unidad)
     doc.setFont('helvetica', 'bold');
     unidadHeaders.forEach((label, index) => {
-        drawCell(40 + (index * 130), y, 130, 20, label); // Sin fondo ni borde
+        let cellX = 40 + (index * 130);
+        let cellY = y + 10;
+        doc.text(label, cellX + 65, cellY, { align: 'center' });
     });
-    y += 20;
+    y += 17;
 
     doc.setFont('helvetica', 'normal');
     unidadData.forEach(row => {
@@ -223,14 +233,16 @@ function generarPDF2(imgData) {
     });
 
     // Espacio entre tablas
-    y += 10;
+    y += 5;
 
     // Dibujar segunda tabla (Clase, Marca, etc.)
     doc.setFont('helvetica', 'bold');
     unidadH.forEach((label, index) => {
-        drawCell(40 + (index * 130), y, 130, 20, label); // Sin fondo ni borde
+        let cellX = 40 + (index * 130);
+        let cellY = y + 10;
+        doc.text(label, cellX + 65, cellY, { align: 'center' });
     });
-    y += 20;
+    y += 17;
 
     doc.setFont('helvetica', 'normal');
     unidadD.forEach(row => {
@@ -239,6 +251,40 @@ function generarPDF2(imgData) {
         });
         y += 20;
     });
+
+    // Espaciado antes del nuevo bloque
+    y += 10;
+
+    // Definir los textos y sus posiciones
+    let opciones = [
+        { texto: "PROPIO:", x: 40 },
+        { texto: "ARRENDADO:", x: 180 },
+        { texto: "DECOMISADO:", x: 320 }
+    ];
+
+    // Dibujar los recuadros alrededor de los textos y los cuadros de selección
+    opciones.forEach(opcion => {
+        let textWidth = doc.getTextWidth(opcion.texto) + 13; // Obtener ancho del texto más margen
+        let rectHeight = 15; // Altura del rectángulo
+        let padding = 5; // Espacio interno
+
+        // Dibujar el rectángulo del texto
+        doc.rect(opcion.x, y, textWidth, rectHeight);
+        doc.text(opcion.texto, opcion.x + padding, y + 11);
+
+        // Dibujar el cuadro de selección al lado derecho del texto
+        let checkBoxSize = 12; // Tamaño del cuadro de selección
+        let checkBoxX = opcion.x + textWidth + 5; // Posición del cuadro de selección
+        doc.rect(checkBoxX, y, checkBoxSize, checkBoxSize);
+    });
+
+    // Dibujar el texto "KM." sin recuadro, alineado con los otros elementos
+    doc.text("KM.", 420, y + 10);
+
+    // Dibujar la línea debajo del bloque de opciones
+    doc.line(40, y + 15, 560, y + 15);
+
+    y += 35; // Espacio después del bloque
 
     return doc.output('bloburl');
 }
