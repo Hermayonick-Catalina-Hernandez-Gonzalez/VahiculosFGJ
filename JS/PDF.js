@@ -1,5 +1,4 @@
 function final() {
-    // Mostrar el mensaje de éxito antes de redirigir
     Swal.fire({
         icon: 'success',
         title: '¡Se ha Guardado Exitosamente!',
@@ -7,8 +6,7 @@ function final() {
         showConfirmButton: false,
         backdrop: false
     }).then(() => {
-        // Redirige a la página de PDFs después de generar el PDF
-        window.location.href = '../../vistas/formulario/pdfs.html';  // Ajusta esta ruta según sea necesario
+        window.location.href = '../../vistas/formulario/pdfs.html';  
     });
 }
 function generarPDF() {
@@ -16,7 +14,7 @@ function generarPDF() {
 
     const img = new Image();
     img.src = '../img/Logo.png';
-    img.src = '../../img/Logo.png'; // Ajusta la ruta si es necesario
+    img.src = '../../img/Logo.png'; 
 
     img.onload = function () {
         const canvas = document.createElement('canvas');
@@ -47,12 +45,11 @@ function generarPDF1(imgData) {
     doc.addImage(imgData, 'PNG', 40, 30, 80, 40);
 
     doc.setFontSize(12);
-    doc.setTextColor(255, 0, 0); // Rojo
+    doc.setTextColor(255, 0, 0);
     doc.text("N° 0342", 500, 70);
 
     // Restablecer color a negro para el resto del documento
     doc.setTextColor(0, 0, 0);
-
 
     // **Tabla de información del vehículo**
     doc.autoTable({
@@ -103,25 +100,23 @@ function generarPDF1(imgData) {
     ];
 
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(11);
+    doc.setFontSize(10);
 
-    // Justificar el texto y agregar salto de línea después de cada párrafo
+    // Justificar el texto 
     reglas.forEach((texto) => {
-        const lines = doc.splitTextToSize(texto, 530); // Ajuste del ancho para dividir el texto adecuadamente
+        const lines = doc.splitTextToSize(texto, 520); 
         lines.forEach((line, index) => {
-            const lineY = y + (index * 15); // Incrementar la posición Y para cada línea
+            const lineY = y + (index * 15);
             doc.text(line, 40, lineY, {
-                align: 'justify', // Justifica el texto
+                align: 'justify', 
                 lineHeightFactor: 1.5,
-                maxWidth: 530
+                maxWidth: 520
             });
         });
-        y += lines.length * 15 + 10; // Incrementar la posición Y después de cada bloque de texto
+        y += lines.length * 15 + 10; 
     });
 
-
-
-    y += 30; // Añadir espacio antes de la firma
+    y += 30;
     doc.setFont("helvetica", "bold");
     doc.text("Firma del Resguardante Interno", doc.internal.pageSize.getWidth() / 2, y, { align: 'center' });
     y += 40;
@@ -166,12 +161,12 @@ function generarPDF2(imgData) {
     }
 
     // Datos generales 
-    drawCell(40, y, 80, 20, "FECHA:", [220, 220, 220]);   // Reducido de 120 a 80
-    drawCell(120, y, 100, 20, "");  // Reducido de 190 a 150
-    drawCell(220, y, 90, 20, "MUNICIPIO:", [220, 220, 220]);  // Reducido de 100 a 90
-    drawCell(300, y, 120, 20, "");  // Reducido de 120 a 150
-    drawCell(400, y, 80, 20, "FGJRM:", [220, 220, 220]);  // Reducido de 120 a 80
-    drawCell(480, y, 90, 20, "");  // Reducido de 160 a 120
+    drawCell(40, y, 80, 20, "FECHA:", [220, 220, 220]);   
+    drawCell(120, y, 100, 20, "");  
+    drawCell(220, y, 90, 20, "MUNICIPIO:", [220, 220, 220]);  
+    drawCell(300, y, 120, 20, "");  
+    drawCell(400, y, 80, 20, "FGJRM:", [220, 220, 220]);  
+    drawCell(480, y, 90, 20, "");  
     y += 30;
 
 
@@ -180,11 +175,10 @@ function generarPDF2(imgData) {
         "FISCALÍA ESPECIALIZADA EN:", "VICEFISCALÍA EN:", "DIRECCIÓN GENERAL:", "DEPARTAMENTO/ÁREA:"
     ];
     fields.forEach(label => {
-        drawCell(40, y, 160, 20, ""); // Celda vacía para el label
-        drawCell(200, y, 370, 20, ""); // Celda vacía para la respuesta
-
-        let textX = 40 + 160 - 5; // Alineación a la derecha dentro de la celda
-        doc.text(label, textX, y + 14, { align: "right" }); // Alinear a la derecha y centrar verticalmente
+        drawCell(40, y, 160, 20, ""); 
+        drawCell(200, y, 370, 20, ""); 
+        let textX = 40 + 160 - 5; 
+        doc.text(label, textX, y + 14, { align: "right" }); 
 
         y += 20;
     });
@@ -192,12 +186,11 @@ function generarPDF2(imgData) {
 
     let internalFields = ["RESGUARDANTE INTERNO:", "CARGO:", "LICENCIA:", "VIGENCIA:", "NÚMERO EMPLEADO:", "CELULAR:"];
     internalFields.forEach(label => {
-        drawCell(40, y, 160, 20, ""); // Celda vacía para el label
-        drawCell(200, y, 370, 20, ""); // Celda vacía para la respuesta
+        drawCell(40, y, 160, 20, ""); 
+        drawCell(200, y, 370, 20, ""); 
 
-        let textX = 40 + 160 - 5; // Alineación a la derecha dentro de la celda
-        doc.text(label, textX, y + 14, { align: "right" }); // Alinear a la derecha y centrar verticalmente
-
+        let textX = 40 + 160 - 5; 
+        doc.text(label, textX, y + 14, { align: "right" }); 
         y += 20;
     });
     y += 10;
@@ -231,8 +224,6 @@ function generarPDF2(imgData) {
         });
         y += 20;
     });
-
-    // Espacio entre tablas
     y += 5;
 
     // Dibujar segunda tabla (Clase, Marca, etc.)
@@ -252,19 +243,16 @@ function generarPDF2(imgData) {
         y += 20;
     });
 
-    // Espaciado antes del nuevo bloque
     y += 10;
-
     // Definir los textos y sus posiciones
     let opciones = [
         { texto: "PROPIO:", x: 40 },
         { texto: "ARRENDADO:", x: 180 },
         { texto: "DECOMISADO:", x: 320 }
     ];
-
     // Dibujar los recuadros alrededor de los textos y los cuadros de selección
     opciones.forEach(opcion => {
-        let textWidth = doc.getTextWidth(opcion.texto) + 13; // Obtener ancho del texto más margen
+        let textWidth = doc.getTextWidth(opcion.texto) + 13; 
         let rectHeight = 15; // Altura del rectángulo
         let padding = 5; // Espacio interno
 
@@ -278,13 +266,11 @@ function generarPDF2(imgData) {
         doc.rect(checkBoxX, y, checkBoxSize, checkBoxSize);
     });
 
-    // Dibujar el texto "KM." sin recuadro, alineado con los otros elementos
+    // Dibujar el texto "KM." 
     doc.text("KM.", 420, y + 10);
-
     // Dibujar la línea debajo del bloque de opciones
     doc.line(40, y + 15, 560, y + 15);
-
-    y += 35; // Espacio después del bloque
+    y += 35; 
 
     return doc.output('bloburl');
 }
