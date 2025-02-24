@@ -53,6 +53,18 @@
                     <textarea id="observaciones" name="observaciones" rows="2" cols="5" placeholder="Observaciones"></textarea>
                 </div>
             </div>
+            <div class="foto-apartado-container">
+                <div class="foto-apartado">
+                    <p>Kilometraje:</p>
+                    <img src="../../img/agregar.png" alt="Kilometraje" class="foto-preview" id="kilometraje" onclick="abrirCamara('Kilometraje')">
+                    <textarea id="observaciones" name="observaciones" rows="2" cols="5" placeholder="Observaciones"></textarea>
+                </div>
+                <div class="foto-apartado">
+                    <p>Numero de Serie:</p>
+                    <img src="../../img/agregar.png" alt="Numero de serie" class="foto-preview" id="numero-serie" onclick="abrirCamara('numero-serie')">
+                    <textarea id="observaciones" name="observaciones" rows="2" cols="5" placeholder="Observaciones"></textarea>
+                </div>
+            </div>
             <button onclick="agregarFotoExtra()" class="btn">Agregar Fotografía Extra</button>
             <div id="extra-fotos-container"></div>
             <button onclick="final()" class="btn">Guardar</button>
