@@ -6,7 +6,7 @@ function final() {
         showConfirmButton: false,
         backdrop: false
     }).then(() => {
-        window.location.href = '../../vistas/formulario/pdfs.html';  
+        window.location.href = '../../vistas/formulario/pdfs.html';
     });
 }
 function generarPDF() {
@@ -14,7 +14,7 @@ function generarPDF() {
 
     const img = new Image();
     img.src = '../img/Logo.png';
-    img.src = '../../img/Logo.png'; 
+    img.src = '../../img/Logo.png';
 
     img.onload = function () {
         const canvas = document.createElement('canvas');
@@ -104,16 +104,16 @@ function generarPDF1(imgData) {
 
     // Justificar el texto 
     reglas.forEach((texto) => {
-        const lines = doc.splitTextToSize(texto, 520); 
+        const lines = doc.splitTextToSize(texto, 520);
         lines.forEach((line, index) => {
             const lineY = y + (index * 15);
             doc.text(line, 40, lineY, {
-                align: 'justify', 
+                align: 'justify',
                 lineHeightFactor: 1.5,
                 maxWidth: 520
             });
         });
-        y += lines.length * 15 + 10; 
+        y += lines.length * 15 + 10;
     });
 
     y += 30;
@@ -161,12 +161,12 @@ function generarPDF2(imgData) {
     }
 
     // Datos generales 
-    drawCell(40, y, 80, 20, "FECHA:", [220, 220, 220]);   
-    drawCell(120, y, 100, 20, "");  
-    drawCell(220, y, 90, 20, "MUNICIPIO:", [220, 220, 220]);  
-    drawCell(300, y, 120, 20, "");  
-    drawCell(400, y, 80, 20, "FGJRM:", [220, 220, 220]);  
-    drawCell(480, y, 90, 20, "");  
+    drawCell(40, y, 80, 20, "FECHA:", [220, 220, 220]);
+    drawCell(120, y, 100, 20, "");
+    drawCell(220, y, 90, 20, "MUNICIPIO:", [220, 220, 220]);
+    drawCell(300, y, 120, 20, "");
+    drawCell(400, y, 80, 20, "FGJRM:", [220, 220, 220]);
+    drawCell(480, y, 90, 20, "");
     y += 30;
 
 
@@ -175,10 +175,10 @@ function generarPDF2(imgData) {
         "FISCALÍA ESPECIALIZADA EN:", "VICEFISCALÍA EN:", "DIRECCIÓN GENERAL:", "DEPARTAMENTO/ÁREA:"
     ];
     fields.forEach(label => {
-        drawCell(40, y, 160, 20, ""); 
-        drawCell(200, y, 370, 20, ""); 
-        let textX = 40 + 160 - 5; 
-        doc.text(label, textX, y + 14, { align: "right" }); 
+        drawCell(40, y, 160, 20, "");
+        drawCell(200, y, 370, 20, "");
+        let textX = 40 + 160 - 5;
+        doc.text(label, textX, y + 14, { align: "right" });
 
         y += 20;
     });
@@ -186,11 +186,11 @@ function generarPDF2(imgData) {
 
     let internalFields = ["RESGUARDANTE INTERNO:", "CARGO:", "LICENCIA:", "VIGENCIA:", "NÚMERO EMPLEADO:", "CELULAR:"];
     internalFields.forEach(label => {
-        drawCell(40, y, 160, 20, ""); 
-        drawCell(200, y, 370, 20, ""); 
+        drawCell(40, y, 160, 20, "");
+        drawCell(200, y, 370, 20, "");
 
-        let textX = 40 + 160 - 5; 
-        doc.text(label, textX, y + 14, { align: "right" }); 
+        let textX = 40 + 160 - 5;
+        doc.text(label, textX, y + 14, { align: "right" });
         y += 20;
     });
     y += 10;
@@ -252,7 +252,7 @@ function generarPDF2(imgData) {
     ];
     // Dibujar los recuadros alrededor de los textos y los cuadros de selección
     opciones.forEach(opcion => {
-        let textWidth = doc.getTextWidth(opcion.texto) + 13; 
+        let textWidth = doc.getTextWidth(opcion.texto) + 13;
         let rectHeight = 15; // Altura del rectángulo
         let padding = 5; // Espacio interno
 
@@ -270,7 +270,139 @@ function generarPDF2(imgData) {
     doc.text("KM.", 420, y + 10);
     // Dibujar la línea debajo del bloque de opciones
     doc.line(40, y + 15, 560, y + 15);
-    y += 35; 
+    y += 35;
+
+    // 📌 Tabla Exterior
+    const colWidthsExterior = [70, 35, 35, 35, 70, 35, 35, 35, 80, 35, 35, 35];
+    const cellHeight = 20;
+    const startX = 40;
+    let startY = y;
+
+    // Encabezados de la tabla Exterior
+    let tableHeadersExterior = ["Exterior", "B", "R", "M", "Interior", "B", "R", "M", "Observaciones", "B", "R", "M"];
+
+    doc.setFont('helvetica', 'bold');
+    let xPos = startX;
+
+    // Dibujar encabezados con bordes
+    tableHeadersExterior.forEach((header, index) => {
+        drawCell(xPos, startY, colWidthsExterior[index], cellHeight, header, [220, 220, 220]);
+        xPos += colWidthsExterior[index];
+    });
+
+    startY += cellHeight; // Mover hacia abajo para los datos
+
+    // Dibujar filas de la tabla Exterior
+    let numRowsExterior = 10;
+    for (let i = 0; i < numRowsExterior; i++) {
+        xPos = startX;
+        for (let j = 0; j < tableHeadersExterior.length; j++) {
+            drawCell(xPos, startY, colWidthsExterior[j], cellHeight, ""); // Celda vacía
+            xPos += colWidthsExterior[j];
+        }
+        startY += cellHeight;
+    }
+
+    // 📌 Tabla Interior 
+    let tableHeadersInterior = [
+        "Interior", "B", "R", "M",
+        "Interior", "B", "R", "M",
+        "Observaciones"
+    ];
+    const colWidthsInterior = [
+        70, 35, 35, 35,
+        70, 35, 35, 35,
+        185  // 📌 Observaciones ocupa todo el alto de la tabla
+    ];
+
+    let startYInterior = startY + 1; // 📍 Agregar espacio entre tablas
+
+    doc.setFont('helvetica', 'bold');
+    xPos = startX;
+
+    // 📌 Dibujar encabezados con bordes para la Tabla Interior
+    tableHeadersInterior.forEach((header, index) => {
+        drawCell(xPos, startYInterior, colWidthsInterior[index], cellHeight, header, [220, 220, 220]);
+        xPos += colWidthsInterior[index];
+    });
+
+    startYInterior += cellHeight; // Mover hacia abajo para los datos
+
+    // 📌 Dibujar filas de la tabla Interior
+    let numRowsInterior = 5;
+    for (let i = 0; i < numRowsInterior; i++) {
+        xPos = startX;
+
+        for (let j = 0; j < tableHeadersInterior.length - 1; j++) { // Omitimos "Observaciones"
+            drawCell(xPos, startYInterior, colWidthsInterior[j], cellHeight, ""); // Celda vacía
+            xPos += colWidthsInterior[j];
+        }
+
+        startYInterior += cellHeight;
+    }
+
+    // 📌 Dibujar un solo cuadro grande para "Observaciones"
+    drawCell(xPos, startYInterior - (numRowsInterior * cellHeight), colWidthsInterior[colWidthsInterior.length - 1], numRowsInterior * cellHeight, "");
+
+
+    // 📌 Tabla Accesorios
+    let tableHeadersAccesorios = [
+        "Accesorio", "Sí", "No",
+        "Interior", "Sí", "No",
+        "Tipo de ocupación"
+    ];
+    const colWidthsAccesorios = [
+        80, 40, 40,
+        80, 40, 40,
+        215
+    ];
+
+    let startYAccesorios = startYInterior + 1; // 📍 Espacio entre tablas
+
+    doc.setFont('helvetica', 'bold');
+    xPos = startX;
+
+    // 📌 Dibujar encabezados con bordes para la Tabla Accesorios
+    tableHeadersAccesorios.forEach((header, index) => {
+        drawCell(xPos, startYAccesorios, colWidthsAccesorios[index], cellHeight, header, [220, 220, 220]);
+        xPos += colWidthsAccesorios[index];
+    });
+
+    startYAccesorios += cellHeight; // Mover hacia abajo para los datos
+
+    // 📌 Dibujar filas de la tabla Accesorios
+    let numRowsAccesorios = 5;
+    for (let i = 0; i < numRowsAccesorios; i++) {
+        xPos = startX;
+
+        for (let j = 0; j < tableHeadersAccesorios.length - 1; j++) { // Omitimos "Tipo de ocupación"
+            drawCell(xPos, startYAccesorios, colWidthsAccesorios[j], cellHeight, ""); // Celda vacía
+            xPos += colWidthsAccesorios[j];
+        }
+
+        startYAccesorios += cellHeight;
+    }
+
+    // 📌 Dibujar un solo cuadro grande para "Tipo de ocupación"
+    drawCell(xPos, startYAccesorios - (numRowsAccesorios * cellHeight), colWidthsAccesorios[colWidthsAccesorios.length - 1], numRowsAccesorios * cellHeight, "");
+
+    // 📌 Texto informativo sobre el cambio de resguardante
+    doc.setFont('helvetica', 'normal');
+
+    let textoAviso = "AL MOMENTO DE CAMBIO DE RESGUARDANTE DEL VEHÍCULO, DEBERÁ INFORMAR A LA " +
+        "DIRECCIÓN GENERAL DE ADMINISTRACIÓN DE FORMA INMEDIATA, " +
+        "al correo: actualizar.reguardovehicular@fgjtam.gob.mx " +
+        "o a los tels. 834 318 51 00 ext. 70258 y 70234.";
+
+    // 📌 Ajustar texto automáticamente para que no se corte
+    let textoFormateado = doc.splitTextToSize(textoAviso, 550);
+
+    doc.text(textoFormateado, 40, 1073);
+
+    y += 20;
+
+    
+
 
     return doc.output('bloburl');
 }
