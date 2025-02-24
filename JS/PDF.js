@@ -399,11 +399,31 @@ function generarPDF2(imgData) {
 
     doc.text(textoFormateado, 40, 1073);
 
-    y += 20;
+    // 📌 Ajustar Y para evitar sobreposición con el texto anterior
+    y = 1200;
 
-    
+    doc.setFont("helvetica", "bold");
 
+    const firmas = [
+        "Resguardante Oficial",
+        "Resguardante Interno",
+        "Verificador",
+        "Autorizacion Depto.REC.MAT"
+    ];
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const startXFirma = 40; // Margen izquierdo
+    const spacing = (pageWidth - startXFirma * 2) / firmas.length; // Espacio entre firmas
+
+    firmas.forEach((texto, index) => {
+        let x = startXFirma + index * spacing;
+
+        doc.text(texto, x + spacing / 2, y, { align: "center" });
+        doc.line(x, y + 40, x + spacing - 15, y + 40);
+
+    });
 
     return doc.output('bloburl');
+
 }
 
