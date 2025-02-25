@@ -50,6 +50,8 @@ function buscarEmpleados() {
                 });
             } else {
                 if (resguardante) {
+                    console.log("Datos recibidos:", data);
+
                     document.getElementById("cargo").value = data.cargo || "";
                     document.getElementById("fiscalia_general").value = data.fiscalia_general || "";
                     document.getElementById("fiscalia_especializada_en").value = data.fiscalia_especializada_en || "";
@@ -59,8 +61,8 @@ function buscarEmpleados() {
                     // Guardar en localStorage
                     localStorage.setItem("cargo", data.cargo || "");
                     localStorage.setItem("fiscalia_general", data.fiscalia_general || "");
-                    localStorage.setItem("fiscalia_especializada", data.fiscalia_especializada_en || "");
-                    localStorage.setItem("vicefiscalia", data.vicefiscalia_en || "");
+                    localStorage.setItem("fiscalia_especializada_en", data.fiscalia_especializada_en || "");
+                    localStorage.setItem("vicefiscalia_en", data.vicefiscalia_en || "");
                     localStorage.setItem("direccion_general", data.direccion_general || "");
                     localStorage.setItem("departamento_area", data.departamento_area || "");
                 }

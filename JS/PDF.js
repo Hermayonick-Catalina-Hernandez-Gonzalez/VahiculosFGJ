@@ -399,8 +399,37 @@ function generarPDF2(imgData) {
 
     doc.text(textoFormateado, 40, 1073);
 
-    // 📌 Ajustar Y para evitar sobreposición con el texto anterior
-    y = 1200;
+
+    // 📌 Posición inicial para las imágenes
+    let imgStartX = 40;  // Margen izquierdo
+    let imgStartY = 1100; // Debajo del texto de aviso
+    let imgWidth = 120;   // Ancho de cada imagen
+    let imgHeight = 90;   // Alto de cada imagen
+    let spacingX = 20;    // Espaciado entre imágenes
+
+    // 📌 Lista de imágenes (pueden ser URLs o base64)
+    const images = [
+        "../carro/Delantero.jpg",
+        "../carro/Posterior.jpg",
+        "../carro/LadoDerecho.jpg",
+        "../carro/LadoIzquerdo.jpg"
+    ];
+
+    // 📌 Cargar y agregar las imágenes al PDF
+    images.forEach((imgSrc, index) => {
+        let x = imgStartX + (index * (imgWidth + spacingX));
+        let y = imgStartY;
+
+        let img = new Image();
+        img.src = imgSrc;
+
+        img.onload = function () {
+            doc.addImage(img, 'JPEG', x, y, imgWidth, imgHeight);
+        };
+    });
+
+    // 📌 Posición de las firmas (después de las imágenes)
+    y = imgStartY + imgHeight + 100; // Ajustar para que las firmas no se sobrepongan
 
     doc.setFont("helvetica", "bold");
 
@@ -420,7 +449,6 @@ function generarPDF2(imgData) {
 
         doc.text(texto, x + spacing / 2, y, { align: "center" });
         doc.line(x, y + 40, x + spacing - 15, y + 40);
-
     });
 
     return doc.output('bloburl');
