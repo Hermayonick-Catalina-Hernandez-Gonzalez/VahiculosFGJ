@@ -12,7 +12,7 @@ if (!isset($_GET['nombre'])) {
 $nombre = $_GET['nombre'];
 
 // Consulta con los nombres de columna correctos
-$sql = "SELECT id, nombre, cargo, numero_empleado, celular, 
+$sql = "SELECT nombre, cargo, numero_empleado, celular, 
                fiscalia_general, fiscalia_especializada_en, vicefiscalia_en, 
                direccion_general, departamento_area 
         FROM empleados 

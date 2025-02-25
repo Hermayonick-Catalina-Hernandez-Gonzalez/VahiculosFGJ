@@ -65,7 +65,6 @@ CREATE TABLE fotos (
 );
 
 -- Crear la tabla Historial
--- Crear la tabla Historial
 CREATE TABLE Historial (
     id INT AUTO_INCREMENT PRIMARY KEY,
     fecha DATE NOT NULL,
@@ -93,6 +92,11 @@ CREATE TABLE Historial (
     FOREIGN KEY (verificacion_id) REFERENCES Verificacion(id),
     FOREIGN KEY (fotos_id) REFERENCES fotos(id)
 );
+
+ALTER TABLE Historial 
+ADD COLUMN documento_1 LONGBLOB, 
+ADD COLUMN documento_2 LONGBLOB;
+
 
 CREATE VIEW vista_historial AS
 SELECT 
