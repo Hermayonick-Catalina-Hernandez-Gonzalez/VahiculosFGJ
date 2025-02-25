@@ -100,7 +100,7 @@ function generarPDF1(imgData) {
     ];
 
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
+    doc.setFontSize(12);
 
     // Justificar el texto 
     reglas.forEach((texto) => {

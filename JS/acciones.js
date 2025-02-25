@@ -3,7 +3,7 @@ function salir() {
 }
 
 function ver(numeroEconomico) {
-    window.location.href = "../vistas/historial.php?numero_economico=" + numeroEconomico;
+    window.location.href = "../vistas/historial.php?numero_economico=" + encodeURIComponent(numeroEconomico);
 }
 
 function regresar() {
