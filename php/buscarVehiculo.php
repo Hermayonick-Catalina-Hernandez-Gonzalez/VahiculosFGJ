@@ -1,5 +1,5 @@
 <?php
-require "../php/conexion.php";
+include '../php/conexion.php'; 
 
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *"); 
@@ -8,23 +8,24 @@ header("Access-Control-Allow-Origin: *");
 if (isset($_GET["numero_economico"])) {
     $numero_economico = $_GET["numero_economico"];
 
-    // Prevenir inyección SQL con prepared statements
-    $stmt = $conn->prepare("SELECT * FROM vehiculos WHERE numero_economico = ?");
-    $stmt->bind_param("i", $numero_economico);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    try {
+        // Consulta con prepared statement para evitar inyección SQL
+        $stmt = $conn->prepare("SELECT * FROM vehiculos WHERE numero_economico = ?");
+        $stmt->execute([$numero_economico]);
 
-    if ($result->num_rows > 0) {
-        $vehiculo = $result->fetch_assoc();
-        echo json_encode($vehiculo); // Enviar datos en formato JSON
-    } else {
-        echo json_encode(["error" => "Vehículo no encontrado"]);
+        $vehiculo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($vehiculo) {
+            echo json_encode($vehiculo); // Enviar datos en formato JSON
+        } else {
+            echo json_encode(["error" => "Vehículo no encontrado"]);
+        }
+    } catch (PDOException $e) {
+        echo json_encode(["error" => "Error en la consulta: " . $e->getMessage()]);
     }
-
-    $stmt->close();
 } else {
     echo json_encode(["error" => "Número económico no proporcionado"]);
 }
 
-$conn->close();
+$conn = null; // Cerrar la conexión
 ?>

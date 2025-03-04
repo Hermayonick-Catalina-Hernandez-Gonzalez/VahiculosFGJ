@@ -1,14 +1,3 @@
-function final() {
-    Swal.fire({
-        icon: 'success',
-        title: '¡Se ha Guardado Exitosamente!',
-        timer: 1500,
-        showConfirmButton: false,
-        backdrop: false
-    }).then(() => {
-        window.location.href = '../../vistas/formulario/pdfs.html';
-    });
-}
 function generarPDF() {
     const { jsPDF } = window.jspdf;
 
@@ -39,13 +28,14 @@ function generarPDF1(imgData) {
     const doc = new jsPDF({
         orientation: 'portrait',
         unit: 'pt',
-        format: [612, 1200]
+        format: [612, 1300]
     });
 
     doc.addImage(imgData, 'PNG', 40, 30, 80, 40);
 
     doc.setFontSize(12);
     doc.setTextColor(255, 0, 0);
+    doc.setFont("helvetica", "bold");
     doc.text("N° 0342", 500, 70);
 
     // Restablecer color a negro para el resto del documento
@@ -56,7 +46,7 @@ function generarPDF1(imgData) {
         startY: 80,
         head: [["MARCA", "SUBMARCA", "SERIE", "MODELO", "PLACA", "N° ECO"]],
         body: [
-            ["Toyota", "Corolla", "3XXAAB", "2022", "ABC-123", "0218"],
+            ["", "", "", "", "", ""],
             [{ content: "AREA", styles: { textColor: [255, 255, 255], fontStyle: "bold" } },
             { content: " ", colSpan: 5, styles: { fillColor: [240, 240, 240], textColor: [0, 0, 0], halign: "center" } }]
         ],
@@ -143,9 +133,9 @@ function generarPDF2(imgData) {
     doc.text("DIRECCIÓN GENERAL DE ADMINISTRACIÓN", 250, 50);
     doc.text("DIRECCIÓN DE RECURSOS MATERIALES Y SERVICIOS", 220, 60);
     doc.text("RESGUARDO VEHICULAR", 290, 70);
-
     doc.setFontSize(12);
     doc.setTextColor(255, 0, 0);
+
     doc.text("N° 0342", 500, 74);
     doc.setTextColor(0, 0, 0);
 
@@ -203,10 +193,10 @@ function generarPDF2(imgData) {
 
     //tabla de unidad
     let unidadHeaders = ["PLACA", "N° ECONÓMICO", "SERIE", "COLOR"];
-    let unidadData = [["ABC-123", "1001", "XYZ789456", "Azul"]];
+    let unidadData = [[" ", " ", " ", " "]];
 
     let unidadH = ["CLASE", "MARCA", "SUBMARCA", "MODELO"];
-    let unidadD = [["Sedán", "Toyota", "Corolla", "2022"]];
+    let unidadD = [[" ", " ", " ", " "]];
 
     // Dibujar primera tabla (Unidad)
     doc.setFont('helvetica', 'bold');
@@ -250,6 +240,7 @@ function generarPDF2(imgData) {
         { texto: "ARRENDADO:", x: 180 },
         { texto: "DECOMISADO:", x: 320 }
     ];
+
     // Dibujar los recuadros alrededor de los textos y los cuadros de selección
     opciones.forEach(opcion => {
         let textWidth = doc.getTextWidth(opcion.texto) + 13;
@@ -272,7 +263,7 @@ function generarPDF2(imgData) {
     doc.line(40, y + 15, 560, y + 15);
     y += 35;
 
-    // 📌 Tabla Exterior
+    //  Tabla Exterior
     const colWidthsExterior = [70, 35, 35, 35, 70, 35, 35, 35, 80, 35, 35, 35];
     const cellHeight = 20;
     const startX = 40;
@@ -303,7 +294,7 @@ function generarPDF2(imgData) {
         startY += cellHeight;
     }
 
-    // 📌 Tabla Interior 
+    // Tabla Interior 
     let tableHeadersInterior = [
         "Interior", "B", "R", "M",
         "Interior", "B", "R", "M",
@@ -312,15 +303,15 @@ function generarPDF2(imgData) {
     const colWidthsInterior = [
         70, 35, 35, 35,
         70, 35, 35, 35,
-        185  // 📌 Observaciones ocupa todo el alto de la tabla
+        185
     ];
 
-    let startYInterior = startY + 1; // 📍 Agregar espacio entre tablas
+    let startYInterior = startY + 1; //  Agregar espacio entre tablas
 
     doc.setFont('helvetica', 'bold');
     xPos = startX;
 
-    // 📌 Dibujar encabezados con bordes para la Tabla Interior
+    //  Dibujar encabezados con bordes para la Tabla Interior
     tableHeadersInterior.forEach((header, index) => {
         drawCell(xPos, startYInterior, colWidthsInterior[index], cellHeight, header, [220, 220, 220]);
         xPos += colWidthsInterior[index];
@@ -328,7 +319,7 @@ function generarPDF2(imgData) {
 
     startYInterior += cellHeight; // Mover hacia abajo para los datos
 
-    // 📌 Dibujar filas de la tabla Interior
+    // Dibujar filas de la tabla Interior
     let numRowsInterior = 5;
     for (let i = 0; i < numRowsInterior; i++) {
         xPos = startX;
@@ -340,12 +331,11 @@ function generarPDF2(imgData) {
 
         startYInterior += cellHeight;
     }
-
-    // 📌 Dibujar un solo cuadro grande para "Observaciones"
+    // Dibujar un solo cuadro grande para "Observaciones"
     drawCell(xPos, startYInterior - (numRowsInterior * cellHeight), colWidthsInterior[colWidthsInterior.length - 1], numRowsInterior * cellHeight, "");
 
 
-    // 📌 Tabla Accesorios
+    //  Tabla Accesorios
     let tableHeadersAccesorios = [
         "Accesorio", "Sí", "No",
         "Interior", "Sí", "No",
@@ -357,12 +347,12 @@ function generarPDF2(imgData) {
         215
     ];
 
-    let startYAccesorios = startYInterior + 1; // 📍 Espacio entre tablas
+    let startYAccesorios = startYInterior + 1; // Espacio entre tablas
 
     doc.setFont('helvetica', 'bold');
     xPos = startX;
 
-    // 📌 Dibujar encabezados con bordes para la Tabla Accesorios
+    //  Dibujar encabezados con bordes para la Tabla Accesorios
     tableHeadersAccesorios.forEach((header, index) => {
         drawCell(xPos, startYAccesorios, colWidthsAccesorios[index], cellHeight, header, [220, 220, 220]);
         xPos += colWidthsAccesorios[index];
@@ -370,7 +360,7 @@ function generarPDF2(imgData) {
 
     startYAccesorios += cellHeight; // Mover hacia abajo para los datos
 
-    // 📌 Dibujar filas de la tabla Accesorios
+    //  Dibujar filas de la tabla Accesorios
     let numRowsAccesorios = 5;
     for (let i = 0; i < numRowsAccesorios; i++) {
         xPos = startX;
@@ -383,10 +373,10 @@ function generarPDF2(imgData) {
         startYAccesorios += cellHeight;
     }
 
-    // 📌 Dibujar un solo cuadro grande para "Tipo de ocupación"
+    // Dibujar un solo cuadro grande para "Tipo de ocupación"
     drawCell(xPos, startYAccesorios - (numRowsAccesorios * cellHeight), colWidthsAccesorios[colWidthsAccesorios.length - 1], numRowsAccesorios * cellHeight, "");
 
-    // 📌 Texto informativo sobre el cambio de resguardante
+    // Texto informativo sobre el cambio de resguardante
     doc.setFont('helvetica', 'normal');
 
     let textoAviso = "AL MOMENTO DE CAMBIO DE RESGUARDANTE DEL VEHÍCULO, DEBERÁ INFORMAR A LA " +
@@ -394,50 +384,17 @@ function generarPDF2(imgData) {
         "al correo: actualizar.reguardovehicular@fgjtam.gob.mx " +
         "o a los tels. 834 318 51 00 ext. 70258 y 70234.";
 
-    // 📌 Ajustar texto automáticamente para que no se corte
+    // Ajustar texto automáticamente para que no se corte
     let textoFormateado = doc.splitTextToSize(textoAviso, 550);
 
     doc.text(textoFormateado, 40, 1073);
 
-
-    // 📌 Posición inicial para las imágenes
-    let imgStartX = 40;  // Margen izquierdo
-    let imgStartY = 1100; // Debajo del texto de aviso
-    let imgWidth = 120;   // Ancho de cada imagen
-    let imgHeight = 90;   // Alto de cada imagen
-    let spacingX = 20;    // Espaciado entre imágenes
-
-    // 📌 Lista de imágenes (pueden ser URLs o base64)
-    const images = [
-        "../carro/Delantero.jpg",
-        "../carro/Posterior.jpg",
-        "../carro/LadoDerecho.jpg",
-        "../carro/LadoIzquerdo.jpg"
-    ];
-
-    // 📌 Cargar y agregar las imágenes al PDF
-    images.forEach((imgSrc, index) => {
-        let x = imgStartX + (index * (imgWidth + spacingX));
-        let y = imgStartY;
-
-        let img = new Image();
-        img.src = imgSrc;
-
-        img.onload = function () {
-            doc.addImage(img, 'JPEG', x, y, imgWidth, imgHeight);
-        };
-    });
-
-    // 📌 Posición de las firmas (después de las imágenes)
-    y = imgStartY + imgHeight + 100; // Ajustar para que las firmas no se sobrepongan
-
-    doc.setFont("helvetica", "bold");
-
+    y = 1300; // Ajusta la posición vertical según necesites
     const firmas = [
         "Resguardante Oficial",
         "Resguardante Interno",
         "Verificador",
-        "Autorizacion Depto.REC.MAT"
+        "Autorización Depto. REC. MAT"
     ];
 
     const pageWidth = doc.internal.pageSize.getWidth();
@@ -447,8 +404,13 @@ function generarPDF2(imgData) {
     firmas.forEach((texto, index) => {
         let x = startXFirma + index * spacing;
 
+        // Ajustar alineación
         doc.text(texto, x + spacing / 2, y, { align: "center" });
-        doc.line(x, y + 40, x + spacing - 15, y + 40);
+
+        // Dibujar línea para la firma
+        let lineStartX = x + 10; // Ajustar inicio de línea
+        let lineEndX = x + spacing - 10; // Ajustar fin de línea
+        doc.line(lineStartX, y + 40, lineEndX, y + 40); // Línea de firma
     });
 
     return doc.output('bloburl');

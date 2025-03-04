@@ -9,6 +9,7 @@ CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     correo VARCHAR(255) NOT NULL UNIQUE,
     contra VARCHAR(255) NOT NULL,
+     rol VARCHAR(50) NOT NULL,  
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -36,97 +37,6 @@ CREATE TABLE vehiculos (
     submarca VARCHAR(50) NOT NULL,
     modelo_vehiculo INT NOT NULL
 );
-
-CREATE TABLE elementos_verificacion (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL UNIQUE
-);
-
-CREATE TABLE Verificacion (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    vehiculo_numeroEconomico INT NOT NULL,
-    elemento_id INT NOT NULL,
-    estado ENUM('Bien', 'Regular', 'Mal') NOT NULL,
-    aprobado ENUM('Sí', 'No') NOT NULL,
-    FOREIGN KEY (vehiculo_numeroEconomico) REFERENCES vehiculos(numero_economico),
-    FOREIGN KEY (elemento_id) REFERENCES elementos_verificacion(id)
-);
-
-
--- Crear la tabla fotos
-CREATE TABLE fotos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    secure_id VARCHAR(64) NOT NULL,
-    nombre_archivo VARCHAR(256) NOT NULL,
-    tamaño BIGINT NOT NULL CHECK(tamaño > 0),
-    observacion VARCHAR(1024) DEFAULT NULL,
-    vehiculo_numeroEconomico INT NOT NULL,
-    FOREIGN KEY (vehiculo_numeroEconomico) REFERENCES vehiculos(numero_economico)
-);
-
--- Crear la tabla Historial
-CREATE TABLE Historial (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    fecha DATE NOT NULL,
-    municipio VARCHAR(50) NOT NULL,
-    FGJRM VARCHAR(50) NOT NULL,
-
-    resguardante_id VARCHAR(20) NOT NULL,  -- Cambiado a VARCHAR(20) para coincidir con empleados.numero_empleado
-    licencia VARCHAR(20) NOT NULL,
-    vigencia_licencia DATE NOT NULL,
-
-    resguardante_interno_id VARCHAR(20) NOT NULL,  -- Cambiado a VARCHAR(20)
-    licencia_interno VARCHAR(20) NOT NULL,
-    vigencia_licencia_interno DATE NOT NULL,
-
-    vehiculo_numeroEconomico INT NOT NULL,
-    tipo ENUM('Propio', 'Arrendado', 'Decomisado') NOT NULL,
-    kilometraje INT NOT NULL CHECK(kilometraje >= 0),
-
-    verificacion_id INT,
-    fotos_id INT,
-
-    FOREIGN KEY (vehiculo_numeroEconomico) REFERENCES vehiculos(numero_economico),
-    FOREIGN KEY (resguardante_id) REFERENCES empleados(numero_empleado),
-    FOREIGN KEY (resguardante_interno_id) REFERENCES empleados(numero_empleado),
-    FOREIGN KEY (verificacion_id) REFERENCES Verificacion(id),
-    FOREIGN KEY (fotos_id) REFERENCES fotos(id)
-);
-
-ALTER TABLE Historial 
-ADD COLUMN documento_1 LONGBLOB, 
-ADD COLUMN documento_2 LONGBLOB;
-
-
-CREATE VIEW vista_historial AS
-SELECT 
-    h.id AS historial_id, h.fecha, h.municipio, h.FGJRM, 
-
-    -- Datos del resguardante principal
-    e1.nombre AS resguardante_nombre, e1.cargo AS resguardante_cargo, 
-    e1.numero_empleado AS resguardante_numero, e1.celular AS resguardante_celular, 
-
-    -- Datos del resguardante interno (puede ser NULL)
-    e2.nombre AS resguardante_interno_nombre, e2.cargo AS resguardante_interno_cargo, 
-    e2.numero_empleado AS resguardante_interno_numero, e2.celular AS resguardante_interno_celular,
-
-    -- Datos del vehículo
-    v.numero_economico AS vehiculo_id, v.numero_economico, v.placa, v.serie, v.color, 
-    v.clase_vehiculo, v.marca_vehiculo, v.submarca, v.modelo_vehiculo,
-
-    -- Datos de la verificación (puede ser NULL)
-    ver.id AS verificacion_id, ver.elemento_id AS verificacion_elemento, 
-    ver.estado AS verificacion_estado, ver.aprobado AS verificacion_aprobado,
-
-    -- Datos de la foto (puede ser NULL)
-    f.id AS foto_id, f.secure_id, f.nombre_archivo, f.tamaño, f.observacion
-
-FROM Historial h
-JOIN empleados e1 ON h.resguardante_id = e1.numero_empleado 
-LEFT JOIN empleados e2 ON h.resguardante_interno_id = e2.numero_empleado 
-JOIN vehiculos v ON h.vehiculo_numeroEconomico = v.numero_economico
-LEFT JOIN fotos f ON h.fotos_id = f.id
-LEFT JOIN Verificacion ver ON h.verificacion_id = ver.id;
 
 
 -- Insertar empleados de prueba

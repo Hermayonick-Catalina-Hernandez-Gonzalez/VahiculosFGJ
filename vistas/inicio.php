@@ -1,13 +1,26 @@
 <?php
-require "../php/conexion.php";
-// Consulta SQL
-$sql = "SELECT * FROM vehiculos";
-$result = $conn->query($sql);
+session_start(); 
+if ($_SESSION['rol'] != 'resguardante') {
+    header("Location: ../index.php");
+    exit();  
+}
+include "../php/conexion.php"; 
+
+$vehiculos = [];
+if ($conn) {
+    try {
+        $query = "SELECT * FROM vehiculos";
+        $stmt = $conn->query($query);
+        $vehiculos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "<p>Error al obtener los datos: " . $e->getMessage() . "</p>";
+    }
+} else {
+    echo "<p>No se pudo conectar a la base de datos.</p>";
+}
 ?>
-
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,16 +29,14 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/stylesInicio.css">
 </head>
-
 <body>
-    <!-- Sección de encabezado y boton de salir-->
     <header class="head">
         <div class="esquina-container">
             <button class="btn-salir" onclick="salir()">
-                <img src="../img/Salir.png" alt="Salir" />
+                <img src="../img/Salir.png" alt="Salir">
             </button>
             <div class="esquina">
-                <img src="../img/Esquina.png" alt="Imagen de Esquina" />
+                <img src="../img/Esquina.png" alt="Imagen de Esquina">
             </div>
         </div>
         <div class="titulo">
@@ -36,55 +47,45 @@ $result = $conn->query($sql);
         </div>
     </header>
 
-    <!-- Barra de busqueda-->
     <div class="barra-busqueda">
-        <input type="text" name="texto_busqueda" id="search" placeholder="Buscar..." oninput="buscar()">
+        <input type="text" id="search" placeholder="Buscar..." oninput="buscar()">
         <img src="../img/Buscador.png" alt="Buscar" class="icono-buscar">
     </div>
 
-    <!--Tabla-->
     <table>
         <thead>
             <tr>
-                <th>N° Economico</th>
+                <th>N° Económico</th>
                 <th>Placa</th>
                 <th>Serie</th>
                 <th>Clase</th>
                 <th>Marca</th>
                 <th>Modelo</th>
-                <th>Acciónes</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody id="vehiculos">
-            <?php
-            // Verificar si la consulta devuelve resultados
-            if ($result->num_rows > 0) {
-                // Mostrar los datos de cada vehículo
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $row["numero_economico"] . "</td>";
-                    echo "<td>" . $row["placa"] . "</td>";
-                    echo "<td>" . $row["serie"] . "</td>";
-                    echo "<td>" . $row["clase_vehiculo"] . "</td>";
-                    echo "<td>" . $row["marca_vehiculo"] . "</td>";
-                    echo "<td>" . $row["modelo_vehiculo"] . "</td>";
-                    echo "<td>
-                        <button onclick=\"editar()\"><i class=\"fa fa-pencil\"></i> Editar</button>
-                        <button onclick=\"ver('" . $row['numero_economico'] . "')\"><i class=\"fa fa-eye\"></i> Ver</button>
-                    </td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='7'>No hay vehículos registrados</td></tr>";
-            }
-
-            // Cerrar la conexión
-            $conn->close();
-            ?>
+            <?php if (!empty($vehiculos)): ?>
+                <?php foreach ($vehiculos as $vehiculo): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($vehiculo['numero_economico']) ?></td>
+                        <td><?= htmlspecialchars($vehiculo['placa']) ?></td>
+                        <td><?= htmlspecialchars($vehiculo['serie']) ?></td>
+                        <td><?= htmlspecialchars($vehiculo['clase_vehiculo']) ?></td>
+                        <td><?= htmlspecialchars($vehiculo['marca_vehiculo']) ?></td>
+                        <td><?= htmlspecialchars($vehiculo['modelo_vehiculo']) ?></td>
+                        <td>
+                            <button onclick="editar()"><i class="fa fa-pencil"></i> Editar</button>
+                            <button onclick="ver('<?= $vehiculo['numero_economico'] ?>')"><i class="fa fa-eye"></i> Ver</button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr><td colspan="7">No hay vehículos registrados</td></tr>
+            <?php endif; ?>
         </tbody>
     </table>
 
     <script src="../JS/acciones.js"></script>
 </body>
-
 </html>
