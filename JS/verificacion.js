@@ -87,3 +87,38 @@ function finalizarFormulario() {
     localStorage.clear();
 }
 
+function guardarVerificacion(categoria, elemento, estado) {
+    const data = { categoria, elemento, estado };
+
+    fetch('../php/guardar_verificacion.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Verificación guardada:', data);
+        // Aquí puedes llamar a la función para guardar las observaciones
+        guardarObservaciones('categoria ejemplo', 'Observaciones de ejemplo', data.verificacion_id);
+    })
+    .catch(error => console.error('Error al guardar la verificación:', error));
+}
+
+function guardarObservaciones(categoria, observaciones, verificacion_id) {
+    const data = { categoria, observaciones, verificacion_id };
+
+    fetch('guardar_observaciones.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log('Observaciones guardadas:', data);
+    })
+    .catch(error => console.error('Error al guardar observaciones:', error));
+}

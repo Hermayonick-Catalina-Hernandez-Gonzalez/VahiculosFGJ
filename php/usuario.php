@@ -16,6 +16,8 @@ $contraseña_encriptada_verificador = password_hash($contraseña_verificador, PA
 $contraseña_encriptada_resguardante = password_hash($contraseña_resguardante, PASSWORD_BCRYPT);
 
 try {
+    // Iniciar transacción para insertar ambos usuarios
+    $conn->beginTransaction();
 
     // Insertar el primer usuario (Verificador)
     $sql = "INSERT INTO usuarios (correo, contra, rol) VALUES (?, ?, ?)";

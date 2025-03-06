@@ -1,12 +1,15 @@
 <?php
-$host = "localhost";
-$user = "root"; 
-$password = "";
-$database = "prueba_vehiculosFGJ";
+$serverName = "192.168.123.245"; 
+$database = "FGJ_VERIFICACION_VEHICULAR"; 
+$username = "usuarioCatalina";
+$password = "FGJ_2025"; 
 
-$conn = new mysqli($host, $user, $password, $database);
+try {
+    $conn = new PDO("sqlsrv:server=$serverName;Database=$database", $username, $password, array(
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION 
+    ));
 
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
+} catch (PDOException $e) {
+    echo "Error de conexión: " . $e->getMessage(); 
 }
 ?>
